@@ -1,0 +1,24 @@
+.bodyInner,
+.bodyInnerVirtualize {
+  height: inherit;
+  padding: 0;
+}
+
+.withBorderHeader {
+  border-right: 1px solid #cbd3dc;
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.withBorderCell {
+  border-right: 1px solid #cbd3dc !important;
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.bodyInnerContainer {
+  width: 100%;
+  height: 40px;
+}
