@@ -1,6 +1,6 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
-import React, { FC, memo, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { FirstLevelItem } from "./components/FirstLevelItem/FirstLevelItem";
 import { ColumnType } from "./components/types/types";
 import styles from "./styles.module.scss";
@@ -45,7 +45,7 @@ export const CustomTable: FC<CustomTableProps> = memo(
     } = tableProps ?? {};
 
     const [dataTable, setDataTable] = useState<any[]>([]);
-    const [expandedIndexes, setExpandedIndexes] = useState<number[]>([]);
+    const [expandedIndexes, setExpandedIndexes] = useState<Array<number | string>>([]);
 
     const tableContainerRef = useRef<HTMLDivElement | null>(null);
     const childFirstTableRef = useRef<HTMLDivElement | null>(null);
@@ -91,7 +91,7 @@ export const CustomTable: FC<CustomTableProps> = memo(
       overscan: 3,
     });
 
-    const generateNestedItemsTopItemsCount = (index: number) => {
+    const generateNestedItemsTopItemsCount = (dataTable: any[], index: number) => {
       let totalItemsCount: number = 0;
       for (let i = 0; i < dataTable.length; i++) {
         if (index === i) break;
@@ -100,7 +100,7 @@ export const CustomTable: FC<CustomTableProps> = memo(
 
         totalItemsCount += 1;
 
-        if (expandedIndexes.includes(i)) {
+        if (expandedIndexes.includes(dataTable[i].id)) {
           totalItemsCount += element?.children?.length ?? 0;
         }
       }
@@ -116,7 +116,17 @@ export const CustomTable: FC<CustomTableProps> = memo(
       return columns.filter((item: any) => item?.pinned).at(-1);
     }, [columns]);
 
-    console.log(dataTable);
+    const onSetExpandIndexes = useCallback(
+      (id: string | number) => {
+        setExpandedIndexes((prev) => {
+          if (prev?.includes(id)) {
+            return prev.filter((el) => el !== id);
+          }
+          return [...prev, id];
+        });
+      },
+      [expandedIndexes]
+    );
 
     return (
       <div
@@ -170,6 +180,7 @@ export const CustomTable: FC<CustomTableProps> = memo(
                 {rowVirtualizer.getVirtualItems().map((row) => {
                   const rowData = dataTable[row.index];
 
+                  // console.log(row.size);
                   return (
                     <div
                       key={rowData.id}
@@ -190,27 +201,20 @@ export const CustomTable: FC<CustomTableProps> = memo(
                     >
                       {columns.map((column: ColumnType) => {
                         if (!column?.pinned) return null;
-
                         const isBorderVisible = isBorder && lastPinned?.field !== column.field;
 
                         return (
                           <FirstLevelItem
                             element={rowData}
-                            column={column}
                             row={row}
                             header={column}
                             scrollRef={tableContainerRef}
-                            onSetExpandIndexes={() => {
-                              setExpandedIndexes((prev) => {
-                                if (prev?.includes(rowData.id)) {
-                                  return prev.filter((el) => el !== rowData.id);
-                                }
-                                return [...prev, rowData.id];
-                              });
-                            }}
-                            heightAbove={generateNestedItemsTopItemsCount(row.index) + 1}
+                            onSetExpandIndexes={onSetExpandIndexes}
+                            heightAbove={generateNestedItemsTopItemsCount(dataTable, row.index) + 1}
                             expanded={expandedIndexes?.includes(rowData.id)}
                             isBorder={isBorderVisible ?? false}
+                            expandedIndexes={expandedIndexes}
+                            generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
                           />
                         );
                       })}
@@ -371,39 +375,18 @@ export const CustomTable: FC<CustomTableProps> = memo(
                           const isBorderVisible = isBorder && lastPinned?.field !== column.field;
 
                           return (
-                            // <div
-                            //   key={column.field}
-                            //   className={clsx(styles.bodyInner, {
-                            //     [styles.withBorderCell]: isBorder,
-                            //   })}
-                            //   style={{
-                            //     ...(maxWidth ? { flex: 1 } : {}),
-                            //     ...column.cellStyle,
-                            //   }}
-                            // >
-                            //   <div className={styles.bodyInnerContainer} style={{ height: "inherit" }}>
-                            //     <div>{column?.valueGetter?.(rowData) ?? rowData[field] ?? ""}</div>
-                            //   </div>
-                            // </div>
-                            // <FirstLevelItem
-                            //   element={rowData}
-                            //   column={column}
-                            //   row={row}
-                            //   header={column}
-                            //   scrollRef={tableContainerRef}
-                            //   onSetExpandIndexes={() => {
-                            //     setExpandedIndexes((prev) => {
-                            //       if (prev?.includes(rowData.id)) {
-                            //         return prev.filter((el) => el !== rowData.id);
-                            //       }
-                            //       return [...prev, rowData.id];
-                            //     });
-                            //   }}
-                            //   heightAbove={generateNestedItemsTopItemsCount(row.index) + 1}
-                            //   expanded={expandedIndexes?.includes(rowData.id)}
-                            //   isBorder={isBorderVisible ?? false}
-                            // />
-                            <span></span>
+                            <FirstLevelItem
+                              element={rowData}
+                              row={row}
+                              header={column}
+                              scrollRef={tableContainerRef}
+                              onSetExpandIndexes={onSetExpandIndexes}
+                              heightAbove={generateNestedItemsTopItemsCount(dataTable, row.index) + 1}
+                              expanded={expandedIndexes?.includes(rowData.id)}
+                              isBorder={isBorderVisible ?? false}
+                              expandedIndexes={expandedIndexes}
+                              generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
+                            />
                           );
                         })}
                       </div>

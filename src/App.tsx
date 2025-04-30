@@ -56,7 +56,7 @@ function App() {
   }, []);
 
   const dataTable = useMemo(() => {
-    return generateDataItems(40, 15, 10);
+    return generateDataItems(40, 15, 20);
   }, []);
 
   // const onClickHandleRow = (row: DataTableType) => {

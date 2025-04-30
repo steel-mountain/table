@@ -1,19 +1,19 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
-import { FC, RefObject, useEffect } from "react";
+import { FC, RefObject } from "react";
 import { ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
 
 interface SecondLevelItemProps {
   element: any;
-  column: any;
   row: any;
   header: ColumnType;
   scrollRef: RefObject<HTMLDivElement | null>;
-  onSetExpandIndexes: () => void;
+  onSetExpandIndexes: (id: string | number) => void;
   heightAbove: number;
   expanded: boolean;
   isBorder: boolean;
+  children: any[];
 }
 
 const rowHeight = 40;
@@ -28,6 +28,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   expanded,
   row,
   isBorder,
+  children,
 }) => {
   const virtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
@@ -39,21 +40,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
     scrollToFn: (offset, options, ins) => {},
   });
 
-  useEffect(() => {
-    virtualizer.measure();
-  }, [expanded]);
-
-  // useEffect(() => {
-  //   const [lastItem] = [...virtualizer.getVirtualItems()].reverse();
-
-  //   if (!lastItem) {
-  //     return;
-  //   }
-
-  //   if (lastItem.index + 10 >= +element?.children?.length) {
-  //     console.log("WORK AT CHILDREN", element.id);
-  //   }
-  // }, [virtualizer.getVirtualItems()]);
+  console.log(heightAbove, element.id);
 
   return (
     <div>
@@ -67,8 +54,9 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
         }}
         onClick={() => {
-          header?.onCellClick?.({ rowData: element, column: header, row });
-          onSetExpandIndexes?.();
+          // header?.onCellClick?.({ rowData: el, column: header, row });
+          console.log(element.id);
+          onSetExpandIndexes?.(element.id);
         }}
       >
         <div className={styles.bodyInnerContainer}>
@@ -78,17 +66,18 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
       {!!element && !!element?.children?.length && expanded && (
         <div
           style={{
-            top: rowHeight,
+            minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+            ...header.cellStyle,
           }}
         >
           <div
             style={{
-              height: `${virtualizer.getTotalSize()}px`,
               position: "relative",
+              height: `${virtualizer.getTotalSize()}px`,
             }}
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
-              const el = element.children?.[virtualRow.index];
+              const rowData = element.children?.[virtualRow.index];
 
               return (
                 <div
@@ -100,9 +89,10 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                     top: 0,
                     left: 0,
                     width: "100%",
-                    display: "flex",
                     borderBottom: "1px solid #cbd3dc",
+                    backgroundColor: "brown",
                   }}
+                  id="child"
                 >
                   <div
                     key={header.field}
@@ -111,16 +101,15 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                     })}
                     style={{
                       ...header.cellStyle,
-                      backgroundColor: "orange",
                       minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
                     }}
                     onClick={() => {
-                      header?.onCellClick?.({ rowData: el, column: header, row });
-                      onSetExpandIndexes?.();
+                      header?.onCellClick?.({ rowData, column: header, row });
+                      onSetExpandIndexes?.(rowData.id);
                     }}
                   >
                     <div className={styles.bodyInnerContainer}>
-                      <div>{header?.valueGetter ? header.valueGetter(el) : el[header.field] ?? ""}</div>
+                      <div>{header?.valueGetter ? header.valueGetter(rowData) : rowData[header.field] ?? ""}</div>
                     </div>
                   </div>
                 </div>

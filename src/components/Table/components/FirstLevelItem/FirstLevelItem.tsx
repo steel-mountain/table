@@ -1,19 +1,21 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
-import { FC, RefObject } from "react";
+import { FC, RefObject, useCallback, useEffect, useState } from "react";
+import { SecondLevelItem } from "../SecondLevelItem/SecondLevelItem";
 import { ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
 
 interface FirstLevelItemProps {
   element: any;
-  column: any;
   row: any;
   header: ColumnType;
   scrollRef: RefObject<HTMLDivElement | null>;
-  onSetExpandIndexes: () => void;
+  onSetExpandIndexes: (id: string | number) => void;
   heightAbove: number;
   expanded: boolean;
   isBorder: boolean;
+  expandedIndexes: Array<number | string>;
+  generateNestedItemsTopItemsCount: (arr: any[], index: number) => number;
 }
 
 const rowHeight = 40;
@@ -21,7 +23,6 @@ const defaultWidthCell = 60;
 
 export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   element,
-  column,
   header,
   scrollRef,
   onSetExpandIndexes,
@@ -29,36 +30,64 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   expanded,
   row,
   isBorder,
+  // expandedIndexes,
+  // generateNestedItemsTopItemsCount,
 }) => {
   const virtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
     scrollMargin: expanded ? heightAbove * rowHeight : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => rowHeight,
-    overscan: 5,
+    overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: (offset, options, ins) => {},
   });
-  console.log(virtualizer, "virtualizer");
 
-  // useEffect(() => {
-  //   virtualizer.measure();
-  // }, [expanded]);
+  const [expandedIndexes, setExpandedIndexes] = useState<Array<number | string>>([]);
 
-  // useEffect(() => {
-  //   const [lastItem] = [...virtualizer.getVirtualItems()].reverse();
+  useEffect(() => {
+    virtualizer.measure();
+    console.log(expandedIndexes);
+  }, [expandedIndexes]);
 
-  //   if (!lastItem) {
-  //     return;
-  //   }
+  const generateNestedItemsTopItemsCount = (dataTable: any[], index: number) => {
+    let totalItemsCount: number = 0;
+    for (let i = 0; i < dataTable.length; i++) {
+      if (index === i) break;
 
-  //   if (lastItem.index + 10 >= +element?.children?.length) {
-  //     console.log("WORK AT CHILDREN", element.id);
-  //   }
-  // }, [virtualizer.getVirtualItems()]);
+      const element = dataTable[i];
+
+      totalItemsCount += 1;
+
+      if (expandedIndexes.includes(dataTable[i].id)) {
+        console.log("test");
+        totalItemsCount += element?.children?.length ?? 0;
+      }
+    }
+
+    return totalItemsCount;
+  };
+
+  const onSetExpandIndexesCurrent = useCallback(
+    (id: string | number) => {
+      setExpandedIndexes((prev) => {
+        if (prev?.includes(id)) {
+          return prev.filter((el) => el !== id);
+        }
+        return [...prev, id];
+      });
+    },
+    [expandedIndexes]
+  );
 
   return (
-    <div>
+    <div
+      style={{
+        ...header.cellStyle,
+        flex: "1 1 0",
+        minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+      }}
+    >
       <div
         key={header.field}
         className={clsx(styles.bodyInner, {
@@ -66,12 +95,11 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
         })}
         style={{
           ...header.cellStyle,
-          // flex: "1 1 0",
           minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
         }}
         onClick={() => {
           header?.onCellClick?.({ rowData: element, column: header, row });
-          onSetExpandIndexes?.();
+          onSetExpandIndexes?.(element.id);
         }}
       >
         <div className={styles.bodyInnerContainer} id="parent">
@@ -81,18 +109,22 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
       {!!element && !!element?.children?.length && expanded && (
         <div
           style={{
-            top: rowHeight,
+            minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+            position: "absolute",
+            top: 40,
+            ...header.cellStyle,
           }}
         >
           <div
             style={{
-              height: `${virtualizer.getTotalSize()}px`,
               position: "relative",
-              display: "flex",
+              height: `${virtualizer.getTotalSize()}px`,
             }}
           >
             {virtualizer.getVirtualItems().map((virtualRow) => {
-              const el = element.children?.[virtualRow.index];
+              const rowData = element.children?.[virtualRow.index];
+
+              console.log(virtualRow);
 
               return (
                 <div
@@ -104,12 +136,23 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     top: 0,
                     left: 0,
                     width: "100%",
-                    display: "flex",
                     borderBottom: "1px solid #cbd3dc",
+                    backgroundColor: "green",
                   }}
-                  id="child"
+                  id={`!@${virtualRow.size}`}
                 >
-                  <div
+                  <SecondLevelItem
+                    element={rowData}
+                    row={virtualRow}
+                    header={header}
+                    scrollRef={scrollRef}
+                    onSetExpandIndexes={onSetExpandIndexesCurrent}
+                    heightAbove={generateNestedItemsTopItemsCount(element.children, virtualRow.index) + 1 + heightAbove}
+                    expanded={expandedIndexes?.includes(rowData.id)}
+                    isBorder={isBorder ?? false}
+                    children={rowData?.children}
+                  />
+                  {/* <div
                     key={header.field}
                     className={clsx(styles.bodyInner, {
                       [styles.withBorderCell]: isBorder,
@@ -120,14 +163,14 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                       minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
                     }}
                     onClick={() => {
-                      header?.onCellClick?.({ rowData: el, column: header, row });
-                      onSetExpandIndexes?.();
+                      // header?.onCellClick?.({ rowData: el, column: header, row });
+                      // onSetExpandIndexes?.();
                     }}
                   >
                     <div className={styles.bodyInnerContainer}>
-                      <div>{header?.valueGetter ? header.valueGetter(el) : el[header.field] ?? ""}</div>
+                      <div>{header?.valueGetter ? header.valueGetter(rowData) : rowData[header.field] ?? ""}</div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               );
             })}

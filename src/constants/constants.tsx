@@ -248,7 +248,7 @@ export const generateDataItems = (
       for (let k = 1; k <= maxGrandchildCount; k++) {
         grandChildren.push({
           id: uuidv4(),
-          amount: k,
+          amount: `${i}.${k}`,
           vehicle: { id: 0, reg_number: `number-${k}-3th`, vin_number: "", count: 12 },
           totally: "group",
           driver: { id: 1, fio: `Statham ${k}.${k}`, count: 15 },
