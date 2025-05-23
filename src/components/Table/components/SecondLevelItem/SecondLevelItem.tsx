@@ -1,6 +1,6 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
-import { FC, RefObject } from "react";
+import { FC, RefObject, useEffect } from "react";
 import { ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
 
@@ -13,7 +13,6 @@ interface SecondLevelItemProps {
   heightAbove: number;
   expanded: boolean;
   isBorder: boolean;
-  children: any[];
 }
 
 const rowHeight = 40;
@@ -28,7 +27,6 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   expanded,
   row,
   isBorder,
-  children,
 }) => {
   const virtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
@@ -40,10 +38,18 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
     scrollToFn: (offset, options, ins) => {},
   });
 
-  console.log(heightAbove, element.id);
+  useEffect(() => {
+    virtualizer.measure();
+  }, [expanded]);
 
   return (
-    <div>
+    <div
+      style={{
+        ...header.cellStyle,
+        flex: "1 1 0",
+        minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+      }}
+    >
       <div
         key={header.field}
         className={clsx(styles.bodyInner, {
@@ -54,8 +60,6 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
         }}
         onClick={() => {
-          // header?.onCellClick?.({ rowData: el, column: header, row });
-          console.log(element.id);
           onSetExpandIndexes?.(element.id);
         }}
       >
@@ -63,8 +67,9 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           <div>{header?.valueGetter ? header.valueGetter(element) : element[header.field] ?? ""}</div>
         </div>
       </div>
-      {!!element && !!element?.children?.length && expanded && (
+      {/* {!!element && !!element?.children?.length && expanded && (
         <div
+          id="grandChild"
           style={{
             minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
             ...header.cellStyle,
@@ -79,6 +84,8 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
             {virtualizer.getVirtualItems().map((virtualRow) => {
               const rowData = element.children?.[virtualRow.index];
 
+              console.log(virtualRow, heightAbove);
+
               return (
                 <div
                   key={virtualRow.index}
@@ -90,9 +97,8 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                     left: 0,
                     width: "100%",
                     borderBottom: "1px solid #cbd3dc",
-                    backgroundColor: "brown",
+                    backgroundColor: "red",
                   }}
-                  id="child"
                 >
                   <div
                     key={header.field}
@@ -117,7 +123,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
             })}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

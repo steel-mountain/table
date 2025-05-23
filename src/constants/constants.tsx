@@ -241,13 +241,14 @@ export const generateDataItems = (
   for (let i = 1; i <= parentCount; i++) {
     const children: DataTableType[] = [];
     const grandChildren: DataTableType[] = [];
-    const childCount = Math.floor(Math.random() * (maxChildren + 1));
-    const maxGrandchildCount = Math.floor(Math.random() * (maxChildren + 1));
+    const childCount = Math.floor(Math.random() * maxChildren) + 1;
+    // const maxGrandchildCount = Math.floor(Math.random() * maxChildren) + 1;
+    const maxGrandchildCount = 2;
 
     if (maxGrandChildren) {
       for (let k = 1; k <= maxGrandchildCount; k++) {
         grandChildren.push({
-          id: uuidv4(),
+          id: `${k} - ${uuidv4()}`,
           amount: `${i}.${k}`,
           vehicle: { id: 0, reg_number: `number-${k}-3th`, vin_number: "", count: 12 },
           totally: "group",
@@ -267,7 +268,7 @@ export const generateDataItems = (
 
     for (let j = 1; j <= childCount; j++) {
       children.push({
-        id: uuidv4(),
+        id: `${j} - ${uuidv4()}`,
         amount: `${i}.${j}`,
         vehicle: { id: 0, reg_number: `number-${j}-2th`, vin_number: "", count: 12 },
         totally: "group",
@@ -285,7 +286,7 @@ export const generateDataItems = (
     }
 
     dataItems.push({
-      id: uuidv4(),
+      id: `${i} - ${uuidv4()}`,
       amount: i,
       vehicle: { id: 0, reg_number: `number-${i}-1st`, vin_number: "", count: 12 },
       totally: "group",

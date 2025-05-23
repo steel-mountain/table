@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { CustomTable } from "./components/Table/Table";
 import { columnsTable, generateDataItems } from "./constants/constants";
 import "./styles.scss";
@@ -46,18 +46,37 @@ function App() {
   //   setFetching(false);
   // };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setLoading(false);
+  //   }, 1500);
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, []);
 
   const dataTable = useMemo(() => {
-    return generateDataItems(40, 15, 20);
+    return generateDataItems(4, 3, 8);
   }, []);
+
+  const columns = useMemo(() => columnsTable, []);
+
+  const tableProps = useMemo(
+    () => ({
+      wrapperStyle: {},
+      isHeaderSticky: true,
+      isBorder: true,
+      enableColumnVirtualizer: false,
+      maxWidth: true,
+      headerStyle: {
+        height: 40,
+      },
+      bodyStyle: {
+        height: 40,
+      },
+    }),
+    []
+  );
 
   // const onClickHandleRow = (row: DataTableType) => {
   //   const updateData = (data: DataTableType[]): DataTableType[] => {
@@ -83,24 +102,7 @@ function App() {
   return (
     <div className="app">
       <div id="table" style={{ width: "100%", height: "100vh" }}>
-        <CustomTable
-          columns={columnsTable}
-          data={dataTable}
-          isLoading={isLoading}
-          tableProps={{
-            wrapperStyle: {},
-            isHeaderSticky: true,
-            isBorder: true,
-            enableColumnVirtualizer: false,
-            maxWidth: true,
-            headerStyle: {
-              height: 40,
-            },
-            bodyStyle: {
-              height: 40,
-            },
-          }}
-        />
+        <CustomTable columns={columns} data={dataTable} isLoading={isLoading} tableProps={tableProps} />
       </div>
     </div>
   );
