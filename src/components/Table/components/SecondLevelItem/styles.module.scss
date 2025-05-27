@@ -1,0 +1,6 @@
+.withBorderCell {
+  border-right: 1px solid #cbd3dc !important;
+  &:last-child {
+    border-right: none;
+  }
+}

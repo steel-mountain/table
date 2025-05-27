@@ -9,13 +9,13 @@ interface SecondLevelItemProps {
   row: any;
   header: ColumnType;
   scrollRef: RefObject<HTMLDivElement | null>;
-  onSetExpandIndexes: (id: string | number) => void;
   heightAbove: number;
   expanded: boolean;
   isBorder: boolean;
+  onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
 }
 
-const rowHeight = 40;
+const defaultHeightRow = 40;
 const defaultWidthCell = 60;
 
 export const SecondLevelItem: FC<SecondLevelItemProps> = ({
@@ -28,18 +28,17 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   row,
   isBorder,
 }) => {
-  const virtualizer = useVirtualizer({
+  const rowVirtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
-    scrollMargin: expanded ? heightAbove * rowHeight : 0,
+    scrollMargin: expanded ? heightAbove * defaultHeightRow : 0,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => rowHeight,
+    estimateSize: () => defaultHeightRow,
     overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
-    scrollToFn: (offset, options, ins) => {},
   });
 
   useEffect(() => {
-    virtualizer.measure();
+    rowVirtualizer.measure();
   }, [expanded]);
 
   return (
@@ -47,7 +46,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
       style={{
         ...header.cellStyle,
         flex: "1 1 0",
-        minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+        background: "red",
       }}
     >
       <div
@@ -57,6 +56,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
         })}
         style={{
           ...header.cellStyle,
+          height: "40px",
           minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
         }}
         onClick={() => {
@@ -64,40 +64,38 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
         }}
       >
         <div className={styles.bodyInnerContainer}>
-          <div>{header?.valueGetter ? header.valueGetter(element) : element[header.field] ?? ""}</div>
+          <div>{header?.valueGetter ? header.valueGetter(element) + "22" : element[header.field] ?? ""}</div>
         </div>
       </div>
       {/* {!!element && !!element?.children?.length && expanded && (
         <div
-          id="grandChild"
           style={{
             minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
             ...header.cellStyle,
+            background: "green",
           }}
         >
           <div
             style={{
-              position: "relative",
-              height: `${virtualizer.getTotalSize()}px`,
+              position: "absolute",
+              height: `${rowVirtualizer.getTotalSize()}px`,
+              background: "green",
             }}
           >
-            {virtualizer.getVirtualItems().map((virtualRow) => {
+            {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const rowData = element.children?.[virtualRow.index];
-
-              console.log(virtualRow, heightAbove);
 
               return (
                 <div
                   key={virtualRow.index}
+                  id="second"
                   style={{
                     height: `${virtualRow.size}px`,
-                    transform: `translateY(${virtualRow.start - rowHeight * heightAbove}px)`,
+                    transform: `translateY(${virtualRow.start - defaultHeightRow * heightAbove}px)`,
                     position: "absolute",
                     top: 0,
                     left: 0,
                     width: "100%",
-                    borderBottom: "1px solid #cbd3dc",
-                    backgroundColor: "red",
                   }}
                 >
                   <div
@@ -108,6 +106,8 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                     style={{
                       ...header.cellStyle,
                       minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+                      height: defaultHeightRow,
+                      background: "green",
                     }}
                     onClick={() => {
                       header?.onCellClick?.({ rowData, column: header, row });

@@ -34,29 +34,10 @@ import "./styles.scss";
 // };
 
 function App() {
-  // const [dataTable, setDataTable] = useState<DataTableType[]>(initialData);
   const [isLoading, setLoading] = useState(true);
-  // const [isFetching, setFetching] = useState(false);
-
-  // const fetchMoreData = async () => {
-  //   if (isFetching) return;
-  //   setFetching(true);
-  //   const newItems = await fetchItems();
-  //   setDataTable((prev) => [...prev, ...newItems]);
-  //   setFetching(false);
-  // };
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setLoading(false);
-  //   }, 1500);
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, []);
 
   const dataTable = useMemo(() => {
-    return generateDataItems(4, 3, 8);
+    return generateDataItems(100, 24, 24);
   }, []);
 
   const columns = useMemo(() => columnsTable, []);
@@ -77,27 +58,6 @@ function App() {
     }),
     []
   );
-
-  // const onClickHandleRow = (row: DataTableType) => {
-  //   const updateData = (data: DataTableType[]): DataTableType[] => {
-  //     return data.map((item) => {
-  //       if (item.id === row.id) {
-  //         return { ...item, isVisibleChildren: item.isVisibleChildren ? !item.isVisibleChildren : true };
-  //       }
-
-  //       if (item.children?.length) {
-  //         return {
-  //           ...item,
-  //           children: updateData(item.children),
-  //         };
-  //       }
-
-  //       return item;
-  //     });
-  //   };
-
-  //   setDataTable(updateData(dataTable));
-  // };
 
   return (
     <div className="app">

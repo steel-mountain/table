@@ -4,6 +4,7 @@ import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } fr
 import { FirstLevelItem } from "./components/FirstLevelItem/FirstLevelItem";
 import { ColumnType } from "./components/types/types";
 import styles from "./styles.module.scss";
+import { countVisibleDescendants } from "./utils/utils";
 
 interface CustomTableProps {
   columns: any;
@@ -14,12 +15,12 @@ interface CustomTableProps {
   fetchMoreData?: () => void;
   tableProps?: {
     wrapperStyle?: React.CSSProperties;
-    headerStyle?: React.CSSProperties;
-    bodyStyle?: React.CSSProperties;
     isHeaderSticky?: boolean;
     isBorder?: boolean;
     enableColumnVirtualizer?: boolean;
     maxWidth?: boolean;
+    headerStyle?: React.CSSProperties;
+    bodyStyle?: React.CSSProperties;
     onHandleRow?: (row: any) => void;
   };
 }
@@ -30,14 +31,17 @@ const zIndexWrapper = 2;
 const boxShadowPinnedTable = "4px 0 6px -2px rgba(0, 0, 0, 0.3)";
 
 export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tableProps }) => {
-  const { wrapperStyle, headerStyle, bodyStyle, isHeaderSticky, isBorder, enableColumnVirtualizer } = tableProps ?? {};
+  const { wrapperStyle, isHeaderSticky, headerStyle, bodyStyle, isBorder, enableColumnVirtualizer, maxWidth } =
+    tableProps ?? {};
 
   const [dataTable, setDataTable] = useState<any[]>([]);
   const [expandedIndexes, setExpandedIndexes] = useState<Array<number | string>>([]);
 
-  const tableContainerRef = useRef<HTMLDivElement | null>(null);
-  const childFirstTableRef = useRef<HTMLDivElement | null>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const childFirstTableRef = useRef<HTMLDivElement>(null);
+  const childSecondTableRef = useRef<HTMLDivElement>(null);
   const rowFirstTableRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const rowSecondTableRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   useEffect(() => {
     setDataTable(data);
@@ -47,14 +51,26 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     rowVirtualizer.measure();
   }, [expandedIndexes]);
 
+  const columnVirtualizer = enableColumnVirtualizer
+    ? useVirtualizer({
+        count: columns.length,
+        getScrollElement: () => tableContainerRef.current,
+        estimateSize: (index) => (!columns[index]?.pinned ? columns[index].cellStyle?.minWidth ?? 100 : null),
+        horizontal: true,
+      })
+    : null;
+
   const rowVirtualizer = useVirtualizer({
     count: dataTable.length,
     getScrollElement: () => tableContainerRef.current,
     estimateSize: (i: number) => {
-      const rowHeight = Number(bodyStyle?.height) || defaultHeightRow;
+      const rowHeight = defaultHeightRow;
+      const row = dataTable[i];
+      if (!row) return rowHeight;
 
-      if (expandedIndexes.includes(dataTable[i].id)) {
-        return rowHeight + (dataTable[i].children?.length || 0) * rowHeight;
+      if (expandedIndexes.includes(row.id)) {
+        const visibleDescendantsCount = countVisibleDescendants(row, expandedIndexes);
+        return rowHeight + visibleDescendantsCount * rowHeight;
       }
 
       return rowHeight;
@@ -62,8 +78,8 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     overscan: 3,
   });
 
-  const generateNestedItemsTopItemsCount = (dataTable: any[], index: number) => {
-    let totalItemsCount: number = 0;
+  const generateNestedItemsTopItemsCount = (index: number) => {
+    let totalItemsCount: number = 1;
     for (let i = 0; i < dataTable.length; i++) {
       if (index === i) break;
 
@@ -71,7 +87,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
       totalItemsCount += 1;
 
-      if (expandedIndexes.includes(dataTable[i].id)) {
+      if (expandedIndexes.includes(element.id)) {
         totalItemsCount += element?.children?.length ?? 0;
       }
     }
@@ -83,18 +99,35 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     return columns.filter((item: any) => item?.pinned).at(-1);
   }, [columns]);
 
-  const onSetExpandIndexes = useCallback((id: string | number) => {
+  const onSetExpandIndexes = useCallback((id: string | number, isParent?: boolean, children?: any) => {
     setExpandedIndexes((prev) => {
-      if (prev?.includes(id)) {
-        return prev.filter((el) => el !== id);
+      const isExpanded = prev.includes(id);
+
+      if (isExpanded) {
+        if (isParent) {
+          const childIds = children.map((child: any) => child.id);
+          return prev.filter((item) => item !== id && !childIds.includes(item));
+        }
+
+        return prev.filter((item) => item !== id);
       }
+
       return [...prev, id];
     });
   }, []);
 
-  const memoizedColums = useMemo(() => columns, [columns]);
+  useEffect(() => {
+    const virtualItems = rowVirtualizer.getVirtualItems();
+    const totalCount = rowVirtualizer.options.count;
 
-  console.log(expandedIndexes);
+    const isLastItemVisible = virtualItems.some((item) => item.index === totalCount - 1);
+
+    if (isLastItemVisible) {
+      // console.log("Последний элемент в зоне видимости!");
+    }
+  }, [rowVirtualizer.getVirtualItems()]);
+
+  const memoizedColums = useMemo(() => columns, [columns]);
 
   return (
     <div
@@ -120,7 +153,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
         >
           <div className={styles.container} style={{ boxShadow: boxShadowPinnedTable }}>
             <div className={clsx({ [styles.headerSticky]: isHeaderSticky })}>
-              <div className={styles.header} style={headerStyle}>
+              <div className={styles.header}>
                 {memoizedColums.map((column: ColumnType) => {
                   if (!column?.pinned) return null;
 
@@ -163,23 +196,21 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       transform: `translateY(${virtualRow.start}px)`,
                       borderBottom: "1px solid #cbd3dc",
                       display: "flex",
-                      ...bodyStyle,
                     }}
                   >
                     {memoizedColums.map((column: ColumnType) => {
                       if (!column?.pinned) return null;
                       const isBorderVisible = isBorder && lastPinned?.field !== column.field;
 
-                      // console.log(virtualRow);
-
                       return (
                         <FirstLevelItem
+                          key={column.field}
                           element={rowData}
                           row={virtualRow}
                           header={column}
                           scrollRef={tableContainerRef}
-                          onSetExpandIndexes={onSetExpandIndexes} // для добавления id в expandedIndexes
-                          heightAbove={generateNestedItemsTopItemsCount(dataTable, virtualRow.index) + 1}
+                          onSetExpandIndexes={onSetExpandIndexes}
+                          heightAbove={generateNestedItemsTopItemsCount(virtualRow.index)}
                           expanded={expandedIndexes?.includes(rowData.id)}
                           isBorder={isBorderVisible ?? false}
                           expandedIndexes={expandedIndexes}
@@ -193,179 +224,177 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
           </div>
         </div>
       </>
-    </div>
-  );
-});
+      {/* <div style={{ width: "100%" }}>
+        {enableColumnVirtualizer ? (
+          <div
+            ref={childSecondTableRef}
+            className={styles.container}
+            style={{ minWidth: columnVirtualizer?.getTotalSize() }}
+          >
+            <div className={clsx({ [styles.headerSticky]: isHeaderSticky })}>
+              <div className={styles.header} style={headerStyle}>
+                {columnVirtualizer?.getVirtualItems().map((item) => {
+                  const column = columns[item.index] as ColumnType;
 
-{
-  /* <div style={{ width: "100%" }}>
-            {enableColumnVirtualizer ? (
-              <div
-                ref={childSecondTableRef}
-                className={styles.container}
-                style={{ minWidth: columnVirtualizer?.getTotalSize() }}
-              >
-                <div className={clsx({ [styles.headerSticky]: isHeaderSticky })}>
-                  <div className={styles.header} style={headerStyle}>
-                    {columnVirtualizer?.getVirtualItems().map((item) => {
-                      const column = columns[item.index] as ColumnType;
+                  if (column?.pinned) return null;
+
+                  return (
+                    <div
+                      key={column.field}
+                      className={clsx(styles.headerInnerVirtualize, {
+                        [styles.withBorderCell]: isBorder,
+                      })}
+                      style={{
+                        width: `${item.size}px`,
+                        transform: `translateX(${item.start}px)`,
+                        ...column.cellStyle,
+                      }}
+                    >
+                      {column?.headerComponent ? (
+                        <column.headerComponent {...column} />
+                      ) : (
+                        <div className={styles.headerInnerContainer}>
+                          <div>{column.headerName}</div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+              {rowVirtualizer.getVirtualItems().map((row) => {
+                const rowData = dataTable[row.index];
+
+                return (
+                  <div
+                    key={rowData.id}
+                    ref={(el) => {
+                      rowSecondTableRefs.current[rowData.id] = el;
+                    }}
+                    style={{
+                      position: "absolute",
+                      transform: `translateY(${row.start}px)`,
+                      width: childSecondTableRef.current?.clientWidth || 0,
+                      borderBottom: "1px solid #cbd3dc",
+                      ...bodyStyle,
+                    }}
+                  >
+                    {columnVirtualizer?.getVirtualItems().map((colItem) => {
+                      const column = columns[colItem.index] as ColumnType;
+                      const field = column.field as string;
 
                       if (column?.pinned) return null;
 
                       return (
                         <div
                           key={column.field}
-                          className={clsx(styles.headerInnerVirtualize, {
+                          className={clsx(styles.bodyInnerVirtualize, {
                             [styles.withBorderCell]: isBorder,
                           })}
                           style={{
-                            width: `${item.size}px`,
-                            transform: `translateX(${item.start}px)`,
                             ...column.cellStyle,
+                            width: `${colItem.size}px`,
+                            transform: `translateX(${colItem.start}px)`,
                           }}
                         >
-                          {column?.headerComponent ? (
-                            <column.headerComponent {...column} />
-                          ) : (
-                            <div className={styles.headerInnerContainer}>
-                              <div>{column.headerName}</div>
-                            </div>
-                          )}
+                          <div className={styles.bodyInnerContainer} style={{ height: "inherit" }}>
+                            <div>{column?.valueGetter?.(rowData) ?? rowData[field] ?? ""}</div>
+                          </div>
                         </div>
                       );
                     })}
                   </div>
-                </div>
-                <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-                  {rowVirtualizer.getVirtualItems().map((row) => {
-                    const rowData = dataTable[row.index];
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <div ref={childSecondTableRef} className={styles.container}>
+            <div
+              className={clsx({
+                [styles.headerSticky]: isHeaderSticky,
+              })}
+            >
+              <div
+                className={styles.header}
+                style={{
+                  ...(maxWidth ? { display: "flex" } : {}),
+                  ...headerStyle,
+                }}
+              >
+                {columns.map((column: ColumnType) => {
+                  if (column?.pinned) return null;
 
-                    return (
-                      <div
-                        key={rowData.id}
-                        ref={(el) => {
-                          rowSecondTableRefs.current[rowData.id] = el;
-                        }}
-                        style={{
-                          position: "absolute",
-                          transform: `translateY(${row.start}px)`,
-                          width: childSecondTableRef.current?.clientWidth || 0,
-                          borderBottom: "1px solid #cbd3dc",
-                          ...bodyStyle,
-                        }}
-                      >
-                        {columnVirtualizer?.getVirtualItems().map((colItem) => {
-                          const column = columns[colItem.index] as ColumnType;
-                          const field = column.field as string;
-
-                          if (column?.pinned) return null;
-
-                          return (
-                            <div
-                              key={column.field}
-                              className={clsx(styles.bodyInnerVirtualize, {
-                                [styles.withBorderCell]: isBorder,
-                              })}
-                              style={{
-                                ...column.cellStyle,
-                                width: `${colItem.size}px`,
-                                transform: `translateX(${colItem.start}px)`,
-                              }}
-                            >
-                              <div className={styles.bodyInnerContainer} style={{ height: "inherit" }}>
-                                <div>{column?.valueGetter?.(rowData) ?? rowData[field] ?? ""}</div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
+                  return (
+                    <div
+                      key={column.field}
+                      className={clsx(styles.headerInner, {
+                        [styles.withBorderCell]: isBorder,
+                      })}
+                      style={{
+                        ...(maxWidth ? { flex: 1 } : {}),
+                        ...column.cellStyle,
+                      }}
+                    >
+                      {column?.headerComponent ? (
+                        <column.headerComponent {...column} />
+                      ) : (
+                        <div className={styles.headerInnerContainer}>
+                          <div>{column.headerName}</div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
-            ) : (
-              <div ref={childSecondTableRef} className={styles.container}>
-                <div
-                  className={clsx({
-                    [styles.headerSticky]: isHeaderSticky,
-                  })}
-                >
+            </div>
+            <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+              {rowVirtualizer.getVirtualItems().map((row) => {
+                const rowData = dataTable[row.index];
+
+                return (
                   <div
-                    className={styles.header}
+                    className={styles.row}
+                    key={rowData.id}
+                    ref={(el) => {
+                      rowSecondTableRefs.current[rowData.id] = el;
+                    }}
                     style={{
-                      ...(maxWidth ? { display: "flex" } : {}),
-                      ...headerStyle,
+                      position: "absolute",
+                      transform: `translateY(${row.start}px)`,
+                      borderBottom: "1px solid #cbd3dc",
+                      ...(maxWidth ? { width: "100%", display: "flex" } : {}),
+                      ...bodyStyle,
                     }}
                   >
                     {columns.map((column: ColumnType) => {
                       if (column?.pinned) return null;
 
+                      const isBorderVisible = isBorder && lastPinned?.field !== column.field;
+
                       return (
-                        <div
+                        <FirstLevelItem
                           key={column.field}
-                          className={clsx(styles.headerInner, {
-                            [styles.withBorderCell]: isBorder,
-                          })}
-                          style={{
-                            ...(maxWidth ? { flex: 1 } : {}),
-                            ...column.cellStyle,
-                          }}
-                        >
-                          {column?.headerComponent ? (
-                            <column.headerComponent {...column} />
-                          ) : (
-                            <div className={styles.headerInnerContainer}>
-                              <div>{column.headerName}</div>
-                            </div>
-                          )}
-                        </div>
+                          element={rowData}
+                          row={row}
+                          header={column}
+                          scrollRef={tableContainerRef}
+                          onSetExpandIndexes={onSetExpandIndexes}
+                          heightAbove={generateNestedItemsTopItemsCount(row.index) + 1}
+                          expanded={expandedIndexes?.includes(rowData.id)}
+                          isBorder={isBorderVisible ?? false}
+                          expandedIndexes={expandedIndexes}
+                        />
                       );
                     })}
                   </div>
-                </div>
-                <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-                  {rowVirtualizer.getVirtualItems().map((row) => {
-                    const rowData = dataTable[row.index];
-
-                    return (
-                      <div
-                        className={styles.row}
-                        key={rowData.id}
-                        ref={(el) => {
-                          rowSecondTableRefs.current[rowData.id] = el;
-                        }}
-                        style={{
-                          position: "absolute",
-                          transform: `translateY(${row.start}px)`,
-                          borderBottom: "1px solid #cbd3dc",
-                          ...(maxWidth ? { width: "100%", display: "flex" } : {}),
-                          ...bodyStyle,
-                        }}
-                      >
-                        {columns.map((column: ColumnType) => {
-                          if (column?.pinned) return null;
-
-                          const isBorderVisible = isBorder && lastPinned?.field !== column.field;
-
-                          return (
-                            <FirstLevelItem
-                              element={rowData}
-                              row={row}
-                              header={column}
-                              scrollRef={tableContainerRef}
-                              onSetExpandIndexes={onSetExpandIndexes}
-                              heightAbove={generateNestedItemsTopItemsCount(dataTable, row.index) + 1}
-                              expanded={expandedIndexes?.includes(rowData.id)}
-                              isBorder={isBorderVisible ?? false}
-                              expandedIndexes={expandedIndexes}
-                            />
-                          );
-                        })}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
-          </div> */
-}
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div> */}
+    </div>
+  );
+});
