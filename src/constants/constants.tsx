@@ -241,10 +241,10 @@ export const generateDataItems = (
   for (let i = 1; i <= parentCount; i++) {
     const children: DataTableType[] = [];
     const grandChildren: DataTableType[] = [];
-    const childCount = Math.floor(Math.random() * maxChildren) + 1;
-    const maxGrandchildCount = Math.floor(Math.random() * maxChildren) + 1;
-    // const childCount = 2;
-    // const maxGrandchildCount = 2;
+    // const childCount = Math.floor(Math.random() * maxChildren) + 1;
+    // const maxGrandchildCount = Math.floor(Math.random() * maxChildren) + 1;
+    const childCount = 3;
+    const maxGrandchildCount = 3;
 
     if (maxGrandChildren) {
       for (let k = 1; k <= maxGrandchildCount; k++) {

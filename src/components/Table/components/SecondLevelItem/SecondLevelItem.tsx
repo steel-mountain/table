@@ -35,6 +35,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
     estimateSize: () => defaultHeightRow,
     overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
+    scrollToFn: () => {},
   });
 
   useEffect(() => {
@@ -67,7 +68,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           <div>{header?.valueGetter ? header.valueGetter(element) + "22" : element[header.field] ?? ""}</div>
         </div>
       </div>
-      {/* {!!element && !!element?.children?.length && expanded && (
+      {!!element && !!element?.children?.length && expanded && (
         <div
           style={{
             minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
@@ -123,7 +124,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
             })}
           </div>
         </div>
-      )} */}
+      )}
     </div>
   );
 };

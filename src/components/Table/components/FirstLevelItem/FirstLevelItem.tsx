@@ -34,7 +34,6 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
 }) => {
   const rowVirtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
-    // скролл нормально не отрабатывает, возможно в этом дело
     scrollMargin: expanded ? heightAbove * defaultHeightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: (index) => {
@@ -50,9 +49,10 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     },
     overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
+    scrollToFn: () => {},
   });
 
-  console.log(heightAbove);
+  // console.log(heightAbove, expanded, heightAbove * defaultHeightRow, row);
 
   useEffect(() => {
     rowVirtualizer.measure();
@@ -76,6 +76,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     return totalItemsCount;
   };
 
+  // Для вложенного открытого списка
   const calculateOffsetBeforeIndex = (index: number): number => {
     const rowHeight = defaultHeightRow;
     const children = element?.children ?? [];
