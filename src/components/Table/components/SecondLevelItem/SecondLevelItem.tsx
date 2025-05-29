@@ -13,28 +13,29 @@ interface SecondLevelItemProps {
   expanded: boolean;
   isBorderRight?: boolean;
   isBorderBottom?: boolean;
+  heightRow: number;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
 }
 
-const defaultHeightRow = 40;
 const defaultWidthCell = 60;
 
 export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   element,
   header,
   scrollRef,
-  onSetExpandIndexes,
   heightAbove,
   expanded,
   row,
   isBorderRight,
   isBorderBottom,
+  heightRow,
+  onSetExpandIndexes,
 }) => {
   const rowVirtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
-    scrollMargin: expanded ? heightAbove * defaultHeightRow : 0,
+    scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => defaultHeightRow,
+    estimateSize: () => heightRow,
     overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
@@ -47,8 +48,9 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   return (
     <div
       style={{
-        ...header.cellStyle,
         flex: "1 1 0",
+        backgroundColor: "red",
+        ...header.cellStyle,
       }}
     >
       <div
@@ -58,9 +60,10 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           [styles.borderBottom]: isBorderBottom,
         })}
         style={{
-          ...header.cellStyle,
-          height: "40px",
+          backgroundColor: "green",
+          height: heightRow,
           minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+          ...header.cellStyle,
         }}
         onClick={() => {
           onSetExpandIndexes?.(element.id);
@@ -92,7 +95,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                   id="second"
                   style={{
                     height: `${virtualRow.size}px`,
-                    transform: `translateY(${virtualRow.start - defaultHeightRow * heightAbove}px)`,
+                    transform: `translateY(${virtualRow.start - heightRow * heightAbove}px)`,
                     position: "absolute",
                     top: 0,
                     left: 0,
@@ -108,7 +111,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                     style={{
                       ...header.cellStyle,
                       minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
-                      height: defaultHeightRow,
+                      height: heightRow,
                     }}
                     onClick={() => {
                       header?.onCellClick?.({ rowData, column: header, row });

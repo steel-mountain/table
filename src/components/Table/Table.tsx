@@ -11,8 +11,6 @@ interface CustomTableProps {
   data: any[];
   isLoading?: boolean;
   isFetching?: boolean;
-  isFlattenArray?: boolean;
-  fetchMoreData?: () => void;
   tableProps?: {
     wrapperStyle?: React.CSSProperties;
     isHeaderSticky?: boolean;
@@ -20,26 +18,24 @@ interface CustomTableProps {
     isBorderBottom?: boolean;
     enableColumnVirtualizer?: boolean;
     maxWidth?: boolean;
-    headerStyle?: React.CSSProperties;
-    bodyStyle?: React.CSSProperties;
-    onHandleRow?: (row: any) => void;
+    headerStyle: React.CSSProperties;
+    bodyStyle: React.CSSProperties;
   };
 }
 
 const defaultHeightRow = 40;
-const defaultWidthCell = 60;
 const zIndexWrapper = 2;
 const boxShadowPinnedTable = "4px 0 6px -2px rgba(0, 0, 0, 0.3)";
 
 export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tableProps }) => {
   const {
-    wrapperStyle,
-    isHeaderSticky,
+    wrapperStyle = {},
+    isHeaderSticky = true,
     headerStyle,
     bodyStyle,
     isBorderRight = true,
     isBorderBottom = true,
-    enableColumnVirtualizer,
+    enableColumnVirtualizer = false,
     maxWidth,
   } = tableProps ?? {};
 
@@ -73,7 +69,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     count: dataTable.length,
     getScrollElement: () => tableContainerRef.current,
     estimateSize: (i: number) => {
-      const rowHeight = defaultHeightRow;
+      const rowHeight = +(headerStyle?.height ?? defaultHeightRow);
       const row = dataTable[i];
       if (!row) return rowHeight;
 
@@ -161,7 +157,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
           }}
         >
           <div className={styles.container} style={{ boxShadow: boxShadowPinnedTable }}>
-            <div className={clsx({ [styles.headerSticky]: isHeaderSticky })}>
+            <div className={clsx({ [styles.headerSticky]: isHeaderSticky })} style={{ ...headerStyle }}>
               <div className={styles.header}>
                 {memoizedColums.map((column: ColumnType) => {
                   if (!column?.pinned) return null;
@@ -204,6 +200,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
                       display: "flex",
+                      ...bodyStyle,
                     }}
                   >
                     {memoizedColums.map((column: ColumnType) => {
@@ -223,6 +220,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                           isBorderRight={isBorder ?? true}
                           isBorderBottom={isBorderBottom}
                           expandedIndexes={expandedIndexes}
+                          heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
                         />
                       );
                     })}
@@ -393,6 +391,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                           isBorderRight={isBorder ?? false}
                           isBorderBottom={isBorderBottom}
                           expandedIndexes={expandedIndexes}
+                          heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
                         />
                       );
                     })}

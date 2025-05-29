@@ -44,9 +44,6 @@ function App() {
 
   const tableProps = useMemo(
     () => ({
-      wrapperStyle: {},
-      isHeaderSticky: true,
-      enableColumnVirtualizer: false,
       maxWidth: true,
       headerStyle: {
         height: 40,

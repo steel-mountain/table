@@ -16,10 +16,10 @@ interface FirstLevelItemProps {
   isBorderBottom?: boolean;
   expandedIndexes: Array<number | string>;
   key: number | string;
+  heightRow: number;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
 }
 
-const defaultHeightRow = 40;
 const defaultWidthCell = 60;
 
 export const FirstLevelItem: FC<FirstLevelItemProps> = ({
@@ -32,14 +32,15 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   isBorderRight,
   isBorderBottom,
   expandedIndexes,
+  heightRow,
   onSetExpandIndexes,
 }) => {
   const rowVirtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
-    scrollMargin: expanded ? heightAbove * defaultHeightRow : 0,
+    scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => defaultHeightRow,
-    overscan: 3,
+    estimateSize: () => heightRow,
+    overscan: 0,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
@@ -47,6 +48,17 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   useEffect(() => {
     rowVirtualizer.measure();
   }, [expandedIndexes]);
+
+  // useEffect(() => {
+  //   const virtualItems = rowVirtualizer.getVirtualItems();
+  //   const totalCount = rowVirtualizer.options.count;
+
+  //   const isLastItemVisible = virtualItems.some((item) => item.index === totalCount - 1);
+
+  //   if (isLastItemVisible) {
+  //     console.log("Последний элемент в зоне видимости!");
+  //   }
+  // }, [rowVirtualizer.getVirtualItems()]);
 
   const generateNestedItemsTopItemsCount = (index: number) => {
     let totalItemsCount: number = 1;
@@ -67,7 +79,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   };
 
   const calculateOffsetBeforeIndex = (index: number): number => {
-    const rowHeight = defaultHeightRow;
+    const rowHeight = heightRow;
     const children = element?.children ?? [];
     let offset = 0;
 
@@ -85,9 +97,9 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   return (
     <div
       style={{
-        ...header.cellStyle,
         flex: "1 1 0",
         minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+        ...header.cellStyle,
       }}
     >
       <div
@@ -98,14 +110,13 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
         })}
         style={{
           ...header.cellStyle,
-          minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
         }}
         onClick={() => {
           header?.onCellClick?.({ rowData: element, column: header, row });
           onSetExpandIndexes?.(element.id, true, element.children);
         }}
       >
-        <div className={styles.bodyInnerContainer} id="parent">
+        <div className={styles.bodyInnerContainer}>
           <div>{header?.valueGetter ? header.valueGetter(element) + "" : element[header.field] ?? ""}</div>
         </div>
       </div>
@@ -134,7 +145,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                   key={virtualRow.index}
                   style={{
                     height: `${virtualRow.size}px`,
-                    transform: `translateY(${virtualRow.start - defaultHeightRow * heightAbove + offset}px)`,
+                    transform: `translateY(${virtualRow.start - heightRow * heightAbove + offset}px)`,
                     position: "absolute",
                     top: 0,
                     left: 0,
@@ -151,6 +162,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     expanded={expandedIndexes?.includes(rowData.id)}
                     isBorderRight={isBorderRight}
                     isBorderBottom={isBorderBottom}
+                    heightRow={heightRow}
                   />
                 </div>
               );
