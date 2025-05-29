@@ -36,27 +36,15 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     count: element?.children?.length ?? 0,
     scrollMargin: expanded ? heightAbove * defaultHeightRow : 0,
     getScrollElement: () => scrollRef.current,
-    estimateSize: (index) => {
-      const rowHeight = defaultHeightRow;
-      const child = element?.children?.[index];
-
-      if (!child) return rowHeight;
-
-      const isExpanded = expandedIndexes.includes(child.id);
-      const nestedCount = isExpanded ? child.children?.length ?? 0 : 0;
-
-      return rowHeight + rowHeight * nestedCount;
-    },
+    estimateSize: () => defaultHeightRow,
     overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
 
-  // console.log(heightAbove, expanded, heightAbove * defaultHeightRow, row);
-
   useEffect(() => {
     rowVirtualizer.measure();
-  }, [expanded]);
+  }, [expandedIndexes]);
 
   const generateNestedItemsTopItemsCount = (index: number) => {
     let totalItemsCount: number = 1;
