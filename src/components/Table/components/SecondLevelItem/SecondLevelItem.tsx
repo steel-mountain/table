@@ -11,7 +11,8 @@ interface SecondLevelItemProps {
   scrollRef: RefObject<HTMLDivElement | null>;
   heightAbove: number;
   expanded: boolean;
-  isBorder: boolean;
+  isBorderRight?: boolean;
+  isBorderBottom?: boolean;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
 }
 
@@ -26,7 +27,8 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   heightAbove,
   expanded,
   row,
-  isBorder,
+  isBorderRight,
+  isBorderBottom,
 }) => {
   const rowVirtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
@@ -47,13 +49,13 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
       style={{
         ...header.cellStyle,
         flex: "1 1 0",
-        background: "red",
       }}
     >
       <div
         key={header.field}
         className={clsx(styles.bodyInner, {
-          [styles.withBorderCell]: isBorder,
+          [styles.borderRight]: isBorderRight,
+          [styles.borderBottom]: isBorderBottom,
         })}
         style={{
           ...header.cellStyle,
@@ -73,14 +75,12 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           style={{
             minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
             ...header.cellStyle,
-            background: "green",
           }}
         >
           <div
             style={{
-              position: "absolute",
+              position: "relative",
               height: `${rowVirtualizer.getTotalSize()}px`,
-              background: "green",
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
@@ -102,13 +102,13 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                   <div
                     key={header.field}
                     className={clsx(styles.bodyInner, {
-                      [styles.withBorderCell]: isBorder,
+                      [styles.borderRight]: isBorderRight,
+                      [styles.borderBottom]: isBorderBottom,
                     })}
                     style={{
                       ...header.cellStyle,
                       minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
                       height: defaultHeightRow,
-                      background: "green",
                     }}
                     onClick={() => {
                       header?.onCellClick?.({ rowData, column: header, row });

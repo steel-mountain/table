@@ -46,7 +46,6 @@ function App() {
     () => ({
       wrapperStyle: {},
       isHeaderSticky: true,
-      isBorder: true,
       enableColumnVirtualizer: false,
       maxWidth: true,
       headerStyle: {

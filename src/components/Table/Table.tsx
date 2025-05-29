@@ -16,7 +16,8 @@ interface CustomTableProps {
   tableProps?: {
     wrapperStyle?: React.CSSProperties;
     isHeaderSticky?: boolean;
-    isBorder?: boolean;
+    isBorderRight?: boolean;
+    isBorderBottom?: boolean;
     enableColumnVirtualizer?: boolean;
     maxWidth?: boolean;
     headerStyle?: React.CSSProperties;
@@ -31,8 +32,16 @@ const zIndexWrapper = 2;
 const boxShadowPinnedTable = "4px 0 6px -2px rgba(0, 0, 0, 0.3)";
 
 export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tableProps }) => {
-  const { wrapperStyle, isHeaderSticky, headerStyle, bodyStyle, isBorder, enableColumnVirtualizer, maxWidth } =
-    tableProps ?? {};
+  const {
+    wrapperStyle,
+    isHeaderSticky,
+    headerStyle,
+    bodyStyle,
+    isBorderRight = true,
+    isBorderBottom = true,
+    enableColumnVirtualizer,
+    maxWidth,
+  } = tableProps ?? {};
 
   const [dataTable, setDataTable] = useState<any[]>([]);
   const [expandedIndexes, setExpandedIndexes] = useState<Array<number | string>>([]);
@@ -161,7 +170,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                     <div
                       key={column.field}
                       className={clsx(styles.headerInner, {
-                        [styles.withBorderHeader]: isBorder,
+                        [styles.withBorderHeader]: isBorderRight,
                       })}
                       style={column.cellStyle}
                     >
@@ -194,13 +203,12 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       width: "100%",
                       height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
-                      borderBottom: "1px solid #cbd3dc",
                       display: "flex",
                     }}
                   >
                     {memoizedColums.map((column: ColumnType) => {
                       if (!column?.pinned) return null;
-                      const isBorderVisible = isBorder && lastPinned?.field !== column.field;
+                      const isBorder = isBorderRight && lastPinned?.field !== column.field;
 
                       return (
                         <FirstLevelItem
@@ -212,7 +220,8 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                           onSetExpandIndexes={onSetExpandIndexes}
                           heightAbove={generateNestedItemsTopItemsCount(virtualRow.index)}
                           expanded={expandedIndexes?.includes(rowData.id)}
-                          isBorder={isBorderVisible ?? false}
+                          isBorderRight={isBorder ?? true}
+                          isBorderBottom={isBorderBottom}
                           expandedIndexes={expandedIndexes}
                         />
                       );
@@ -224,7 +233,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
           </div>
         </div>
       </>
-      {/* <div style={{ width: "100%" }}>
+      <div style={{ width: "100%" }}>
         {enableColumnVirtualizer ? (
           <div
             ref={childSecondTableRef}
@@ -242,7 +251,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                     <div
                       key={column.field}
                       className={clsx(styles.headerInnerVirtualize, {
-                        [styles.withBorderCell]: isBorder,
+                        [styles.borderRight]: isBorderRight,
                       })}
                       style={{
                         width: `${item.size}px`,
@@ -276,7 +285,6 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       position: "absolute",
                       transform: `translateY(${row.start}px)`,
                       width: childSecondTableRef.current?.clientWidth || 0,
-                      borderBottom: "1px solid #cbd3dc",
                       ...bodyStyle,
                     }}
                   >
@@ -290,7 +298,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                         <div
                           key={column.field}
                           className={clsx(styles.bodyInnerVirtualize, {
-                            [styles.withBorderCell]: isBorder,
+                            [styles.borderRight]: isBorderRight,
                           })}
                           style={{
                             ...column.cellStyle,
@@ -330,7 +338,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                     <div
                       key={column.field}
                       className={clsx(styles.headerInner, {
-                        [styles.withBorderCell]: isBorder,
+                        [styles.borderRight]: isBorderRight,
                       })}
                       style={{
                         ...(maxWidth ? { flex: 1 } : {}),
@@ -363,7 +371,6 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                     style={{
                       position: "absolute",
                       transform: `translateY(${row.start}px)`,
-                      borderBottom: "1px solid #cbd3dc",
                       ...(maxWidth ? { width: "100%", display: "flex" } : {}),
                       ...bodyStyle,
                     }}
@@ -371,7 +378,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                     {columns.map((column: ColumnType) => {
                       if (column?.pinned) return null;
 
-                      const isBorderVisible = isBorder && lastPinned?.field !== column.field;
+                      const isBorder = isBorderRight && lastPinned?.field !== column.field;
 
                       return (
                         <FirstLevelItem
@@ -383,7 +390,8 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                           onSetExpandIndexes={onSetExpandIndexes}
                           heightAbove={generateNestedItemsTopItemsCount(row.index) + 1}
                           expanded={expandedIndexes?.includes(rowData.id)}
-                          isBorder={isBorderVisible ?? false}
+                          isBorderRight={isBorder ?? false}
+                          isBorderBottom={isBorderBottom}
                           expandedIndexes={expandedIndexes}
                         />
                       );
@@ -394,7 +402,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
             </div>
           </div>
         )}
-      </div> */}
+      </div>
     </div>
   );
 });

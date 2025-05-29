@@ -12,7 +12,8 @@ interface FirstLevelItemProps {
   scrollRef: RefObject<HTMLDivElement | null>;
   heightAbove: number;
   expanded: boolean;
-  isBorder: boolean;
+  isBorderRight?: boolean;
+  isBorderBottom?: boolean;
   expandedIndexes: Array<number | string>;
   key: number | string;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
@@ -28,7 +29,8 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   scrollRef,
   heightAbove,
   expanded,
-  isBorder,
+  isBorderRight,
+  isBorderBottom,
   expandedIndexes,
   onSetExpandIndexes,
 }) => {
@@ -64,7 +66,6 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     return totalItemsCount;
   };
 
-  // Для вложенного открытого списка
   const calculateOffsetBeforeIndex = (index: number): number => {
     const rowHeight = defaultHeightRow;
     const children = element?.children ?? [];
@@ -92,7 +93,8 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
       <div
         key={header.field}
         className={clsx(styles.bodyInner, {
-          [styles.withBorderCell]: isBorder,
+          [styles.borderRight]: isBorderRight,
+          [styles.borderBottom]: isBorderBottom,
         })}
         style={{
           ...header.cellStyle,
@@ -111,14 +113,13 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
         <div
           style={{
             minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
-            position: "absolute", // для растягивания блока
             top: 40,
             ...header.cellStyle,
           }}
         >
           <div
             style={{
-              position: "absolute",
+              position: "relative",
               height: `${rowVirtualizer.getTotalSize()}px`,
             }}
           >
@@ -148,7 +149,8 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     onSetExpandIndexes={onSetExpandIndexes}
                     heightAbove={generateNestedItemsTopItemsCount(virtualRow.index) + 1 + heightAbove}
                     expanded={expandedIndexes?.includes(rowData.id)}
-                    isBorder={isBorder ?? false}
+                    isBorderRight={isBorderRight}
+                    isBorderBottom={isBorderBottom}
                   />
                 </div>
               );
