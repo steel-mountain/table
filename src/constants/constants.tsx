@@ -243,15 +243,15 @@ export const generateDataItems = (
     const grandChildren: DataTableType[] = [];
     // const childCount = Math.floor(Math.random() * maxChildren) + 1;
     // const maxGrandchildCount = Math.floor(Math.random() * maxChildren) + 1;
-    const childCount = 10;
-    const maxGrandchildCount = 10;
+    const childCount = 6;
+    const maxGrandchildCount = 6;
 
     if (maxGrandChildren) {
       for (let k = 1; k <= maxGrandchildCount; k++) {
         grandChildren.push({
           id: `${k} - ${uuidv4()}`,
           amount: `${i}.${k}`,
-          vehicle: { id: 0, reg_number: `number-${k}-3th`, vin_number: "", count: 12 },
+          vehicle: { id: 0, reg_number: `number-${k}-third`, vin_number: "", count: 12 },
           totally: "group",
           driver: { id: 1, fio: `Statham ${k}.${k}`, count: 15 },
           gas_station: { name: "noName", count_name: 25, operator: "Татнефть", count_operator: 10 },
@@ -271,7 +271,7 @@ export const generateDataItems = (
       children.push({
         id: `${j} - ${uuidv4()}`,
         amount: `${i}.${j}`,
-        vehicle: { id: 0, reg_number: `number-${j}-2th`, vin_number: "", count: 12 },
+        vehicle: { id: 0, reg_number: `number-${j}-second`, vin_number: "", count: 12 },
         totally: "group",
         driver: { id: 1, fio: `Statham ${i}.${j}`, count: 15 },
         gas_station: { name: "noName", count_name: 25, operator: `Татнефть ${i}.${j}`, count_operator: 10 },
@@ -289,7 +289,7 @@ export const generateDataItems = (
     dataItems.push({
       id: `${i} - ${uuidv4()}`,
       amount: i,
-      vehicle: { id: 0, reg_number: `number-${i}-1st`, vin_number: "", count: 12 },
+      vehicle: { id: 0, reg_number: `number-${i}-first`, vin_number: "", count: 12 },
       totally: "group",
       driver: { id: 1, fio: "Statham", count: 15 },
       gas_station: { name: "noName", count_name: 25, operator: "Татнефть", count_operator: 10 },

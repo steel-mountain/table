@@ -14,6 +14,7 @@ interface SecondLevelItemProps {
   isBorderRight?: boolean;
   isBorderBottom?: boolean;
   heightRow: number;
+  expandedIndexes: Array<number | string>;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
 }
 
@@ -29,6 +30,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   isBorderRight,
   isBorderBottom,
   heightRow,
+  expandedIndexes,
   onSetExpandIndexes,
 }) => {
   const rowVirtualizer = useVirtualizer({
@@ -36,19 +38,31 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => heightRow,
-    overscan: 3,
+    overscan: 2,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
 
   useEffect(() => {
     rowVirtualizer.measure();
-  }, [expanded]);
+  }, [expandedIndexes]);
+
+  if (!!element && !!element?.children?.length && expanded) {
+    // console.log(heightAbove, heightRow, element?.vehicle?.reg_number, element?.children);
+    console.log({
+      count: element?.children?.length ?? 0,
+      scrollMargin: expanded ? heightAbove * heightRow : 0,
+      getScrollElement: () => scrollRef.current,
+      estimateSize: () => heightRow,
+      overscan: 2,
+      enabled: !!element?.children?.length && !!scrollRef.current && expanded,
+      scrollToFn: () => {},
+    });
+  }
 
   return (
     <div
       style={{
-        flex: "1 1 0",
         backgroundColor: "red",
         ...header.cellStyle,
       }}
@@ -70,7 +84,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
         }}
       >
         <div className={styles.bodyInnerContainer}>
-          <div>{header?.valueGetter ? header.valueGetter(element) + "22" : element[header.field] ?? ""}</div>
+          <div>{header?.valueGetter ? header.valueGetter(element) : element[header.field] ?? ""}</div>
         </div>
       </div>
       {!!element && !!element?.children?.length && expanded && (
@@ -92,7 +106,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
               return (
                 <div
                   key={virtualRow.index}
-                  id="second"
+                  id={`second-${heightAbove}`}
                   style={{
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start - heightRow * heightAbove}px)`,

@@ -231,7 +231,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
           </div>
         </div>
       </>
-      <div style={{ width: "100%" }}>
+      {/* <div style={{ width: "100%" }}>
         {enableColumnVirtualizer ? (
           <div
             ref={childSecondTableRef}
@@ -401,7 +401,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
             </div>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 });

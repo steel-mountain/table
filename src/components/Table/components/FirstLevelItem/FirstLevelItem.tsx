@@ -35,12 +35,22 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   heightRow,
   onSetExpandIndexes,
 }) => {
+  // console.log(heightAbove, heightRow, element?.vehicle?.reg_number);
+
+  //TODO Скролл в компоненте SecondLevelItem как будто бы вообще никак не трогает
+  // В том смысле, что, когда скроллим вниз то дочерние элементы никак не пропадают, пока не пропадет
+  // родитель (это заметно когда меняем в этом компоненте overscan).
+  // Высота и размеры родителей, детей => grandдетей все нормально вроде.
+  // При том что меняя overscan в SecondLevelItem
+  // то никаких признаков. Возможно виртуализатор не работает в SecondLevelItem,
+  // либо настроен неправильно
+
   const rowVirtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => heightRow,
-    overscan: 0,
+    overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
@@ -48,17 +58,6 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   useEffect(() => {
     rowVirtualizer.measure();
   }, [expandedIndexes]);
-
-  // useEffect(() => {
-  //   const virtualItems = rowVirtualizer.getVirtualItems();
-  //   const totalCount = rowVirtualizer.options.count;
-
-  //   const isLastItemVisible = virtualItems.some((item) => item.index === totalCount - 1);
-
-  //   if (isLastItemVisible) {
-  //     console.log("Последний элемент в зоне видимости!");
-  //   }
-  // }, [rowVirtualizer.getVirtualItems()]);
 
   const generateNestedItemsTopItemsCount = (index: number) => {
     let totalItemsCount: number = 1;
@@ -94,6 +93,11 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     return offset;
   };
 
+  const getRowHeightWithChildren = (rowData: any) => {
+    if (!expandedIndexes.includes(rowData.id)) return heightRow;
+    return heightRow + (rowData.children?.length ?? 0) * heightRow;
+  };
+
   return (
     <div
       style={{
@@ -124,27 +128,35 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
         <div
           style={{
             minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
-            top: 40,
             ...header.cellStyle,
           }}
         >
           <div
             style={{
               position: "relative",
-              height: `${rowVirtualizer.getTotalSize()}px`,
+              // height: `${rowVirtualizer.getTotalSize()}px`,
+              height: `${
+                +rowVirtualizer.getTotalSize() +
+                +expandedIndexes.reduce((sum, id) => {
+                  const item = element.children.find((el: any) => el.id === id);
+                  return +sum + (item?.children?.length ?? 0) * heightRow;
+                }, 0)
+              }px`,
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const rowData = element.children?.[virtualRow.index];
 
               const offset = calculateOffsetBeforeIndex(virtualRow.index);
+              const totalHeight = getRowHeightWithChildren(rowData);
 
               return (
                 <div
-                  id="first"
+                  id={`first-${heightAbove}`}
                   key={virtualRow.index}
                   style={{
                     height: `${virtualRow.size}px`,
+                    // height: totalHeight,
                     transform: `translateY(${virtualRow.start - heightRow * heightAbove + offset}px)`,
                     position: "absolute",
                     top: 0,
@@ -158,11 +170,12 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     header={header}
                     scrollRef={scrollRef}
                     onSetExpandIndexes={onSetExpandIndexes}
-                    heightAbove={generateNestedItemsTopItemsCount(virtualRow.index) + 1 + heightAbove}
+                    heightAbove={generateNestedItemsTopItemsCount(virtualRow.index) + heightAbove}
                     expanded={expandedIndexes?.includes(rowData.id)}
                     isBorderRight={isBorderRight}
                     isBorderBottom={isBorderBottom}
                     heightRow={heightRow}
+                    expandedIndexes={expandedIndexes}
                   />
                 </div>
               );

@@ -37,7 +37,7 @@ function App() {
   const [isLoading, setLoading] = useState(true);
 
   const dataTable = useMemo(() => {
-    return generateDataItems(100, 24, 24);
+    return generateDataItems(40, 24, 24);
   }, []);
 
   const columns = useMemo(() => columnsTable, []);
