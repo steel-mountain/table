@@ -1,8 +1,9 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
 import React, { FC, memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { NativeReactLoading } from "../NativeReactLoading/NativeReactLoading";
 import { FirstLevelItem } from "./components/FirstLevelItem/FirstLevelItem";
-import { ColumnType } from "./components/types/types";
+import { ApiType, ColumnType } from "./components/types/types";
 import styles from "./styles.module.scss";
 import { countVisibleDescendants } from "./utils/utils";
 
@@ -27,7 +28,7 @@ const defaultHeightRow = 40;
 const zIndexWrapper = 2;
 const boxShadowPinnedTable = "4px 0 6px -2px rgba(0, 0, 0, 0.3)";
 
-export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tableProps }) => {
+export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tableProps, isLoading }) => {
   const {
     wrapperStyle = {},
     isHeaderSticky = true,
@@ -81,11 +82,10 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     getScrollElement: () => tableContainerRef.current,
     estimateSize: (i) => {
       const rowHeight = +(headerStyle?.height ?? defaultHeightRow);
-      const row = dataTable[i];
-      if (!row) return rowHeight;
+      const element = dataTable[i];
 
-      if (expandedIndexes.includes(row.id)) {
-        const visibleDescendantsCount = countVisibleDescendants(row, expandedIndexes);
+      if (expandedIndexes.includes(element.id)) {
+        const visibleDescendantsCount = countVisibleDescendants(element, expandedIndexes);
         return rowHeight + visibleDescendantsCount * rowHeight;
       }
       return defaultHeightRow;
@@ -156,25 +156,18 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     return columns.filter((item: any) => item?.pinned).at(-1);
   }, [columns]);
 
-  const onMouseLeave = useCallback((index: number) => {
-    const rowFirstTable = rowFirstTableRefs.current[index];
-    const rowSecondTable = rowSecondTableRefs.current[index];
-    if (rowFirstTable && rowSecondTable) {
-      rowFirstTable.classList.remove(styles.cellHover);
-      rowSecondTable.classList.remove(styles.cellHover);
-    }
-  }, []);
-
-  const onMouseEnter = useCallback((index: number) => {
-    const rowFirstTable = rowFirstTableRefs.current[index];
-    const rowSecondTable = rowSecondTableRefs.current[index];
-    if (rowFirstTable && rowSecondTable) {
-      rowFirstTable.classList.add(styles.cellHover);
-      rowSecondTable.classList.add(styles.cellHover);
-    }
-  }, []);
-
   const memoizedColums = useMemo(() => columns, [columns]);
+
+  const api: ApiType = useMemo(
+    () => ({
+      getColumns: () => columns,
+      getCellValue: (field: string, data: any) => {
+        const column = columns.find((col: any) => col.field === field);
+        return column?.valueGetter?.(data) ?? data[field] ?? "";
+      },
+    }),
+    [columns]
+  );
 
   return (
     <div
@@ -224,55 +217,57 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                 })}
               </div>
             </div>
-            <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                const row = dataTable[virtualRow.index];
+            {isLoading ? null : (
+              <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                  const element = dataTable[virtualRow.index];
 
-                return (
-                  <div
-                    key={row.id}
-                    ref={(el) => {
-                      rowFirstTableRefs.current[row.id] = el;
-                    }}
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "100%",
-                      transform: `translateY(${virtualRow.start}px)`,
-                      display: "flex",
-                      ...bodyStyle,
-                      // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
-                    }}
-                    // onMouseLeave={() => onMouseLeave(row.id)}
-                    // onMouseEnter={() => onMouseEnter(row.id)}
-                  >
-                    {memoizedColums.map((column: ColumnType) => {
-                      if (!column?.pinned) return null;
-                      const isBorder = isBorderRight && lastPinned?.field !== column.field;
+                  return (
+                    <div
+                      key={element.id}
+                      ref={(el) => {
+                        rowFirstTableRefs.current[element.id] = el;
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        transform: `translateY(${virtualRow.start}px)`,
+                        display: "flex",
+                        ...bodyStyle,
+                        // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                      }}
+                    >
+                      {memoizedColums.map((column: ColumnType) => {
+                        if (!column?.pinned) return null;
 
-                      return (
-                        <FirstLevelItem
-                          key={column.field}
-                          element={row}
-                          row={virtualRow}
-                          header={column}
-                          scrollRef={tableContainerRef}
-                          onSetExpandIndexes={onSetExpandIndexes}
-                          heightAbove={generateNestedItemsTopItemsCount(row.id) + 1}
-                          expanded={expandedIndexes?.includes(row.id)}
-                          isBorderRight={isBorder ?? true}
-                          isBorderTop={isBorderTop}
-                          expandedIndexes={expandedIndexes}
-                          heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
-                          generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
-                        />
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
+                        const isBorder = isBorderRight && lastPinned?.field !== column.field;
+
+                        return (
+                          <FirstLevelItem
+                            key={column.field}
+                            element={element}
+                            row={virtualRow}
+                            column={column}
+                            scrollRef={tableContainerRef}
+                            onSetExpandIndexes={onSetExpandIndexes}
+                            heightAbove={generateNestedItemsTopItemsCount(element.id) + 1}
+                            expanded={expandedIndexes?.includes(element.id)}
+                            isBorderRight={isBorder ?? true}
+                            isBorderTop={isBorderTop}
+                            expandedIndexes={expandedIndexes}
+                            heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
+                            generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
+                            api={api}
+                          />
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       </>
@@ -400,53 +395,56 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                 })}
               </div>
             </div>
-            <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                const row = dataTable[virtualRow.index];
+            {isLoading ? (
+              <NativeReactLoading />
+            ) : (
+              <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                  const element = dataTable[virtualRow.index];
 
-                return (
-                  <div
-                    key={row.id}
-                    ref={(el) => {
-                      rowSecondTableRefs.current[row.id] = el;
-                    }}
-                    style={{
-                      ...(maxWidth ? { width: "100%", display: "flex" } : {}),
-                      ...bodyStyle,
-                      // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
-                      position: "absolute",
-                      transform: `translateY(${virtualRow.start}px)`,
-                    }}
-                    // onMouseLeave={() => onMouseLeave(row.id)}
-                    // onMouseEnter={() => onMouseEnter(row.id)}
-                  >
-                    {columns.map((column: ColumnType) => {
-                      if (column?.pinned) return null;
+                  return (
+                    <div
+                      key={element.id}
+                      ref={(el) => {
+                        rowSecondTableRefs.current[element.id] = el;
+                      }}
+                      style={{
+                        ...(maxWidth ? { width: "100%", display: "flex" } : {}),
+                        ...bodyStyle,
+                        // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                        position: "absolute",
+                        transform: `translateY(${virtualRow.start}px)`,
+                      }}
+                    >
+                      {columns.map((column: ColumnType) => {
+                        if (column?.pinned) return null;
 
-                      const isBorder = isBorderRight && lastPinned?.field !== column.field;
+                        const isBorder = isBorderRight && lastPinned?.field !== column.field;
 
-                      return (
-                        <FirstLevelItem
-                          key={column.field}
-                          element={row}
-                          row={virtualRow}
-                          header={column}
-                          scrollRef={tableContainerRef}
-                          onSetExpandIndexes={onSetExpandIndexes}
-                          heightAbove={generateNestedItemsTopItemsCount(row.id) + 1}
-                          expanded={expandedIndexes?.includes(row.id)}
-                          isBorderRight={isBorder ?? true}
-                          isBorderTop={isBorderTop}
-                          expandedIndexes={expandedIndexes}
-                          heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
-                          generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
-                        />
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
+                        return (
+                          <FirstLevelItem
+                            key={column.field}
+                            element={element}
+                            row={virtualRow}
+                            column={column}
+                            scrollRef={tableContainerRef}
+                            onSetExpandIndexes={onSetExpandIndexes}
+                            heightAbove={generateNestedItemsTopItemsCount(element.id) + 1}
+                            expanded={expandedIndexes?.includes(element.id)}
+                            isBorderRight={isBorder ?? true}
+                            isBorderTop={isBorderTop}
+                            expandedIndexes={expandedIndexes}
+                            heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
+                            generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
+                            api={api}
+                          />
+                        );
+                      })}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -1,13 +1,14 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
 import { FC, RefObject, useCallback, useEffect } from "react";
-import { ColumnType } from "../types/types";
+import { CellLoader } from "../../../CellLoader/CellLoader";
+import { ApiType, ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
 
 interface SecondLevelItemProps {
   element: any;
   row: any;
-  header: ColumnType;
+  column: ColumnType;
   scrollRef: RefObject<HTMLDivElement | null>;
   heightAbove: number;
   expanded: boolean;
@@ -15,6 +16,7 @@ interface SecondLevelItemProps {
   isBorderTop?: boolean;
   heightRow: number;
   expandedIndexes: Array<number | string>;
+  api: ApiType;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
 }
 
@@ -22,7 +24,7 @@ const defaultWidthCell = 60;
 
 export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   element,
-  header,
+  column,
   scrollRef,
   heightAbove,
   expanded,
@@ -31,6 +33,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   isBorderTop,
   heightRow,
   expandedIndexes,
+  api,
   onSetExpandIndexes,
 }) => {
   const rowVirtualizer = useVirtualizer({
@@ -64,36 +67,44 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   }, []);
 
   return (
-    <div
-      style={{
-        ...header.cellStyle,
-      }}
-    >
+    <div style={{ ...column.cellStyle }}>
       <div
-        key={header.field}
+        key={column.field}
         className={clsx(styles.bodyInner, {
           [styles.borderRight]: isBorderRight,
           [styles.borderTop]: isBorderTop,
         })}
         style={{
-          // backgroundColor: "green",
+          backgroundColor: "green",
           height: heightRow,
-          minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
-          ...header.cellStyle,
+          minWidth: column?.cellStyle?.minWidth || defaultWidthCell,
+          ...column.cellStyle,
         }}
         onClick={() => {
           onSetExpandIndexes?.(element.id);
         }}
       >
         <div className={styles.bodyInnerContainer}>
-          <div>{header?.valueGetter ? header.valueGetter(element) : element[header.field] ?? ""}</div>
+          {false ? (
+            <CellLoader />
+          ) : column?.cellComponent ? (
+            <column.cellComponent
+              data={element}
+              column={column}
+              row={row}
+              value={column?.valueGetter?.(element) ?? element[column.field] ?? ""}
+              api={api}
+            />
+          ) : (
+            <div>{column?.valueGetter ? column?.valueGetter?.(element) : element[column.field] ?? ""}</div>
+          )}
         </div>
       </div>
       {!!element && !!element?.children?.length && expanded && (
         <div
           style={{
-            minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
-            ...header.cellStyle,
+            minWidth: column?.cellStyle?.minWidth || defaultWidthCell,
+            ...column.cellStyle,
           }}
         >
           <div
@@ -121,24 +132,36 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                   onMouseEnter={() => onMouseEnter(rowData.id)}
                 >
                   <div
-                    key={header.field}
+                    key={column.field}
                     className={clsx(styles.bodyInner, {
                       [styles.borderRight]: isBorderRight,
                       [styles.borderTop]: isBorderTop,
                     })}
                     style={{
-                      ...header.cellStyle,
-                      minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
+                      ...column.cellStyle,
+                      minWidth: column?.cellStyle?.minWidth || defaultWidthCell,
                       height: heightRow,
-                      // backgroundColor: "red",
+                      backgroundColor: "red",
                     }}
                     onClick={() => {
-                      header?.onCellClick?.({ rowData, column: header, row });
+                      column?.onCellClick?.({ rowData, column, row });
                       onSetExpandIndexes?.(rowData.id);
                     }}
                   >
                     <div className={styles.bodyInnerContainer}>
-                      <div>{header?.valueGetter ? header.valueGetter(rowData) : rowData[header.field] ?? ""}</div>
+                      {false ? (
+                        <CellLoader />
+                      ) : column?.cellComponent ? (
+                        <column.cellComponent
+                          data={rowData}
+                          column={column}
+                          row={virtualRow}
+                          value={column?.valueGetter?.(rowData) ?? rowData[column.field] ?? ""}
+                          api={api}
+                        />
+                      ) : (
+                        <div>{column?.valueGetter ? column?.valueGetter?.(rowData) : rowData[column.field] ?? ""}</div>
+                      )}
                     </div>
                   </div>
                 </div>

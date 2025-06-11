@@ -1,14 +1,15 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
 import { FC, RefObject, useCallback, useEffect } from "react";
+import { CellLoader } from "../../../CellLoader/CellLoader";
 import { SecondLevelItem } from "../SecondLevelItem/SecondLevelItem";
-import { ColumnType } from "../types/types";
+import { ApiType, ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
 
 interface FirstLevelItemProps {
   element: any;
   row: any;
-  header: ColumnType;
+  column: ColumnType;
   scrollRef: RefObject<HTMLDivElement | null>;
   heightAbove: number;
   expanded: boolean;
@@ -17,6 +18,7 @@ interface FirstLevelItemProps {
   expandedIndexes: Array<number | string>;
   key: number | string;
   heightRow: number;
+  api: ApiType;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
   generateNestedItemsTopItemsCount: (index: number | string) => number;
 }
@@ -26,7 +28,7 @@ const defaultWidthCell = 60;
 export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   element,
   row,
-  header,
+  column,
   scrollRef,
   heightAbove,
   expanded,
@@ -34,6 +36,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   isBorderTop,
   expandedIndexes,
   heightRow,
+  api,
   onSetExpandIndexes,
   generateNestedItemsTopItemsCount,
 }) => {
@@ -54,6 +57,18 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
+
+  useEffect(() => {
+    const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
+
+    if (!lastItem) {
+      return;
+    }
+
+    if (lastItem.index) {
+      console.log("отработал");
+    }
+  }, [rowVirtualizer.getVirtualItems()]);
 
   useEffect(() => {
     rowVirtualizer.measure();
@@ -79,21 +94,21 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     <div
       style={{
         flex: "1 1 0",
-        minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
-        ...header.cellStyle,
+        minWidth: column?.cellStyle?.minWidth || defaultWidthCell,
+        ...column.cellStyle,
       }}
     >
       <div
-        key={header.field}
+        key={column.field}
         className={clsx(styles.bodyInner, {
           [styles.borderRight]: isBorderRight,
           [styles.borderTop]: isBorderTop,
         })}
         style={{
-          ...header.cellStyle,
+          ...column.cellStyle,
         }}
         onClick={() => {
-          header?.onCellClick?.({ rowData: element, column: header, row });
+          column?.onCellClick?.({ rowData: element, column, row });
           onSetExpandIndexes?.(element.id, true, element.children);
         }}
         data-id={element.id}
@@ -101,14 +116,26 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
         onMouseEnter={() => onMouseEnter(element.id)}
       >
         <div className={styles.bodyInnerContainer}>
-          <div>{header?.valueGetter ? header.valueGetter(element) : element[header.field] ?? ""}</div>
+          {false ? (
+            <CellLoader />
+          ) : column?.cellComponent ? (
+            <column.cellComponent
+              data={element}
+              column={column}
+              row={row}
+              value={column?.valueGetter?.(element) ?? element[column.field] ?? ""}
+              api={api}
+            />
+          ) : (
+            <div>{column?.valueGetter ? column?.valueGetter?.(element) : element[column.field] ?? ""}</div>
+          )}
         </div>
       </div>
       {!!element && !!element?.children?.length && expanded && (
         <div
           style={{
-            minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
-            ...header.cellStyle,
+            minWidth: column?.cellStyle?.minWidth || defaultWidthCell,
+            ...column.cellStyle,
           }}
         >
           <div
@@ -138,7 +165,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                   <SecondLevelItem
                     element={row}
                     row={virtualRow}
-                    header={header}
+                    column={column}
                     scrollRef={scrollRef}
                     onSetExpandIndexes={onSetExpandIndexes}
                     heightAbove={generateNestedItemsTopItemsCount(row.id) + 1}
@@ -147,6 +174,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     isBorderTop={isBorderTop}
                     heightRow={heightRow}
                     expandedIndexes={expandedIndexes}
+                    api={api}
                   />
                 </div>
               );

@@ -1,14 +1,18 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CustomTable } from "./components/Table/Table";
 import { columnsTable, generateDataItems } from "./constants/constants";
 import "./styles.scss";
 
 function App() {
-  const [isLoading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(false);
 
   const dataTable = useMemo(() => {
     return generateDataItems(40, 5, 5);
   }, []);
+
+  useEffect(() => {
+    console.log(dataTable);
+  }, [dataTable]);
 
   const columns = useMemo(() => columnsTable, []);
 

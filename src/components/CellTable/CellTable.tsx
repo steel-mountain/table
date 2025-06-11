@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { ArrowDown } from "../../assets/components/ArrowDown";
-import { ArrowUp } from "../../assets/components/ArrowUp";
 import { CellProps } from "../Table/components/types/types";
 import styles from "./styles.module.scss";
 
@@ -15,16 +14,9 @@ export const CellTable: FC<CellProps> = (props) => {
         fontWeight: data.totally === "group" ? "700" : "400",
       }}
     >
-      <div>{typeof value === "object" ? +Object.keys(value ?? 0)?.[0] : value}</div>
-      {data.totally === "group" && (
-        <div>
-          {column?.field === "vehicle" && !data.isVisibleChildren ? (
-            <ArrowDown cursor="pointer" />
-          ) : column?.field === "vehicle" && data.isVisibleChildren ? (
-            <ArrowUp cursor="pointer" />
-          ) : null}
-        </div>
-      )}
+      <div>{value}</div>
+      <div>{column?.pinned && column?.field !== "amount" ? <ArrowDown cursor="pointer" style={{}} /> : null}</div>
+      {/* Следить за expendedIndexes, up or down arrow */}
     </div>
   );
 };
