@@ -77,21 +77,29 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
       })
     : null;
 
+  const [childs, setChilds] = useState<Record<string, any[]>>({});
+
   const rowVirtualizer = useVirtualizer({
     count: dataTable.length,
     getScrollElement: () => tableContainerRef.current,
+
     estimateSize: (i) => {
       const rowHeight = +(headerStyle?.height ?? defaultHeightRow);
       const element = dataTable[i];
 
       if (expandedIndexes.includes(element.id)) {
-        const visibleDescendantsCount = countVisibleDescendants(element, expandedIndexes);
+        const visibleDescendantsCount = countVisibleDescendants(childs[element.id], expandedIndexes);
+
         return rowHeight + visibleDescendantsCount * rowHeight;
       }
       return defaultHeightRow;
     },
     overscan: 3,
   });
+
+  useEffect(() => {
+    rowVirtualizer?.measure();
+  }, [childs]);
 
   useEffect(() => {
     const virtualItems = rowVirtualizer.getVirtualItems();
@@ -120,8 +128,10 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
           count++;
 
-          if (expandedIndexes.includes(item.id) && item.children) {
-            traverse(item.children);
+          const children = childs[item.id];
+
+          if (expandedIndexes.includes(item.id) && children) {
+            traverse(children);
           }
         }
       }
@@ -129,7 +139,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
       traverse(dataTable);
       return count;
     },
-    [expandedIndexes]
+    [expandedIndexes, childs]
   );
 
   const onSetExpandIndexes = useCallback(
@@ -139,7 +149,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
         if (isExpanded) {
           if (isParent) {
-            const childIds = children.map((child: any) => child.id);
+            const childIds = children?.map((child: any) => child.id);
             return prev.filter((item) => item !== id && !childIds.includes(item));
           }
 
@@ -171,282 +181,312 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
   return (
     <div
-      className={styles.tableContainer}
-      ref={tableContainerRef}
       style={{
-        overflow: "auto",
-        height: "100%",
-        width: "100%",
-        position: "relative",
         display: "flex",
-        ...wrapperStyle,
+        flexDirection: "column",
+        width: "100%",
+        height: "100%",
       }}
     >
-      <>
+      <button>FFFF</button>
+      <div
+        style={{
+          flex: 1,
+          position: "relative",
+        }}
+      >
         <div
-          ref={childFirstTableRef}
           style={{
-            position: "sticky",
+            position: "absolute",
+            top: 0,
             left: 0,
-            zIndex: zIndexWrapper,
+            width: "100%",
+            height: "100%",
           }}
         >
-          <div className={styles.container} style={{ boxShadow: boxShadowPinnedTable }}>
-            <div className={clsx({ [styles.headerSticky]: isHeaderSticky })} style={{ ...headerStyle }}>
-              <div className={styles.header}>
-                {memoizedColums.map((column: ColumnType) => {
-                  if (!column?.pinned) return null;
-
-                  return (
-                    <div
-                      key={column.field}
-                      className={clsx(styles.headerInner, {
-                        [styles.withBorderHeader]: isBorderRight,
-                      })}
-                      style={column.cellStyle}
-                    >
-                      {column.headerComponent ? (
-                        <column.headerComponent {...column} />
-                      ) : (
-                        <div className={styles.headerInnerContainer}>
-                          <div>{column.headerName}</div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            {isLoading ? null : (
-              <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                  const element = dataTable[virtualRow.index];
-
-                  return (
-                    <div
-                      key={element.id}
-                      ref={(el) => {
-                        rowFirstTableRefs.current[element.id] = el;
-                      }}
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        transform: `translateY(${virtualRow.start}px)`,
-                        display: "flex",
-                        ...bodyStyle,
-                        // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
-                      }}
-                    >
+          {/* Для позиционирования кнопки */}
+          <div
+            className={styles.tableContainer}
+            ref={tableContainerRef}
+            style={{
+              overflow: "auto",
+              height: "100%",
+              width: "100%",
+              position: "relative",
+              display: "flex",
+              ...wrapperStyle,
+            }}
+          >
+            <>
+              <div
+                ref={childFirstTableRef}
+                style={{
+                  position: "sticky",
+                  left: 0,
+                  zIndex: zIndexWrapper,
+                }}
+              >
+                <div className={styles.container} style={{ boxShadow: boxShadowPinnedTable }}>
+                  <div className={clsx({ [styles.headerSticky]: isHeaderSticky })} style={{ ...headerStyle }}>
+                    <div className={styles.header}>
                       {memoizedColums.map((column: ColumnType) => {
                         if (!column?.pinned) return null;
 
-                        const isBorder = isBorderRight && lastPinned?.field !== column.field;
-
                         return (
-                          <FirstLevelItem
+                          <div
                             key={column.field}
-                            element={element}
-                            row={virtualRow}
-                            column={column}
-                            scrollRef={tableContainerRef}
-                            onSetExpandIndexes={onSetExpandIndexes}
-                            heightAbove={generateNestedItemsTopItemsCount(element.id) + 1}
-                            expanded={expandedIndexes?.includes(element.id)}
-                            isBorderRight={isBorder ?? true}
-                            isBorderTop={isBorderTop}
-                            expandedIndexes={expandedIndexes}
-                            heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
-                            generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
-                            api={api}
-                          />
+                            className={clsx(styles.headerInner, {
+                              [styles.withBorderHeader]: isBorderRight,
+                            })}
+                            style={column.cellStyle}
+                          >
+                            {column.headerComponent ? (
+                              <column.headerComponent {...column} />
+                            ) : (
+                              <div className={styles.headerInnerContainer}>
+                                <div>{column.headerName}</div>
+                              </div>
+                            )}
+                          </div>
                         );
                       })}
                     </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </div>
-      </>
-      <div style={{ width: "100%" }}>
-        {enableColumnVirtualizer ? (
-          <div
-            ref={childSecondTableRef}
-            className={styles.container}
-            style={{ minWidth: columnVirtualizer?.getTotalSize() }}
-          >
-            <div className={clsx({ [styles.headerSticky]: isHeaderSticky })}>
-              <div className={styles.header} style={headerStyle}>
-                {columnVirtualizer?.getVirtualItems().map((item) => {
-                  const column = columns[item.index] as ColumnType;
+                  </div>
+                  {isLoading ? null : (
+                    <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+                      {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                        const element = dataTable[virtualRow.index];
 
-                  if (column?.pinned) return null;
+                        return (
+                          <div
+                            key={element.id}
+                            ref={(el) => {
+                              rowFirstTableRefs.current[element.id] = el;
+                            }}
+                            style={{
+                              position: "absolute",
+                              top: 0,
+                              left: 0,
+                              width: "100%",
+                              transform: `translateY(${virtualRow.start}px)`,
+                              display: "flex",
+                              ...bodyStyle,
+                              // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                            }}
+                          >
+                            {memoizedColums.map((column: ColumnType, index: number) => {
+                              if (!column?.pinned) return null;
 
-                  return (
-                    <div
-                      key={column.field}
-                      className={clsx(styles.headerInnerVirtualize, {
-                        [styles.borderRight]: isBorderRight,
+                              const isBorder = isBorderRight && lastPinned?.field !== column.field;
+
+                              return (
+                                <FirstLevelItem
+                                  key={column.field}
+                                  element={element}
+                                  row={virtualRow}
+                                  column={column}
+                                  scrollRef={tableContainerRef}
+                                  onSetExpandIndexes={onSetExpandIndexes}
+                                  heightAbove={generateNestedItemsTopItemsCount(element.id) + 1}
+                                  expanded={expandedIndexes?.includes(element.id)}
+                                  isBorderRight={isBorder ?? true}
+                                  isBorderTop={isBorderTop}
+                                  expandedIndexes={expandedIndexes}
+                                  heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
+                                  generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
+                                  api={api}
+                                  isFirst={index === 0}
+                                  setChilds={setChilds}
+                                />
+                              );
+                            })}
+                          </div>
+                        );
                       })}
-                      style={{
-                        width: `${item.size}px`,
-                        transform: `translateX(${item.start}px)`,
-                        ...column.cellStyle,
-                      }}
-                    >
-                      {column?.headerComponent ? (
-                        <column.headerComponent {...column} />
-                      ) : (
-                        <div className={styles.headerInnerContainer}>
-                          <div>{column.headerName}</div>
-                        </div>
-                      )}
                     </div>
-                  );
-                })}
+                  )}
+                </div>
               </div>
-            </div>
-            <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-              {rowVirtualizer.getVirtualItems().map((row) => {
-                const rowData = dataTable[row.index];
+            </>
+            <div style={{ width: "100%" }}>
+              {enableColumnVirtualizer ? (
+                <div
+                  ref={childSecondTableRef}
+                  className={styles.container}
+                  style={{ minWidth: columnVirtualizer?.getTotalSize() }}
+                >
+                  <div className={clsx({ [styles.headerSticky]: isHeaderSticky })}>
+                    <div className={styles.header} style={headerStyle}>
+                      {columnVirtualizer?.getVirtualItems().map((item) => {
+                        const column = columns[item.index] as ColumnType;
 
-                return (
-                  <div
-                    key={rowData.id}
-                    ref={(el) => {
-                      rowSecondTableRefs.current[rowData.id] = el;
-                    }}
-                    style={{
-                      position: "absolute",
-                      transform: `translateY(${row.start}px)`,
-                      width: childSecondTableRef.current?.clientWidth || 0,
-                      ...bodyStyle,
-                    }}
-                  >
-                    {columnVirtualizer?.getVirtualItems().map((colItem) => {
-                      const column = columns[colItem.index] as ColumnType;
-                      const field = column.field as string;
+                        if (column?.pinned) return null;
 
-                      if (column?.pinned) return null;
+                        return (
+                          <div
+                            key={column.field}
+                            className={clsx(styles.headerInnerVirtualize, {
+                              [styles.borderRight]: isBorderRight,
+                            })}
+                            style={{
+                              width: `${item.size}px`,
+                              transform: `translateX(${item.start}px)`,
+                              ...column.cellStyle,
+                            }}
+                          >
+                            {column?.headerComponent ? (
+                              <column.headerComponent {...column} />
+                            ) : (
+                              <div className={styles.headerInnerContainer}>
+                                <div>{column.headerName}</div>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+                    {rowVirtualizer.getVirtualItems().map((row) => {
+                      const rowData = dataTable[row.index];
 
                       return (
                         <div
-                          key={column.field}
-                          className={clsx(styles.bodyInnerVirtualize, {
-                            [styles.borderRight]: isBorderRight,
-                          })}
+                          key={rowData.id}
+                          ref={(el) => {
+                            rowSecondTableRefs.current[rowData.id] = el;
+                          }}
                           style={{
-                            ...column.cellStyle,
-                            width: `${colItem.size}px`,
-                            transform: `translateX(${colItem.start}px)`,
+                            position: "absolute",
+                            transform: `translateY(${row.start}px)`,
+                            width: childSecondTableRef.current?.clientWidth || 0,
+                            ...bodyStyle,
                           }}
                         >
-                          <div className={styles.bodyInnerContainer} style={{ height: "inherit" }}>
-                            <div>{column?.valueGetter?.(rowData) ?? rowData[field] ?? ""}</div>
-                          </div>
+                          {columnVirtualizer?.getVirtualItems().map((colItem) => {
+                            const column = columns[colItem.index] as ColumnType;
+                            const field = column.field as string;
+
+                            if (column?.pinned) return null;
+
+                            return (
+                              <div
+                                key={column.field}
+                                className={clsx(styles.bodyInnerVirtualize, {
+                                  [styles.borderRight]: isBorderRight,
+                                })}
+                                style={{
+                                  ...column.cellStyle,
+                                  width: `${colItem.size}px`,
+                                  transform: `translateX(${colItem.start}px)`,
+                                }}
+                              >
+                                <div className={styles.bodyInnerContainer} style={{ height: "inherit" }}>
+                                  <div>{column?.valueGetter?.(rowData) ?? rowData[field] ?? ""}</div>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       );
                     })}
                   </div>
-                );
-              })}
-            </div>
-          </div>
-        ) : (
-          <div ref={childSecondTableRef} className={styles.container}>
-            <div
-              className={clsx({
-                [styles.headerSticky]: isHeaderSticky,
-              })}
-            >
-              <div
-                className={styles.header}
-                style={{
-                  ...(maxWidth ? { display: "flex" } : {}),
-                  ...headerStyle,
-                }}
-              >
-                {columns.map((column: ColumnType) => {
-                  if (column?.pinned) return null;
-
-                  return (
+                </div>
+              ) : (
+                <div ref={childSecondTableRef} className={styles.container}>
+                  <div
+                    className={clsx({
+                      [styles.headerSticky]: isHeaderSticky,
+                    })}
+                  >
                     <div
-                      key={column.field}
-                      className={clsx(styles.headerInner, {
-                        [styles.borderRight]: isBorderRight,
-                      })}
+                      className={styles.header}
                       style={{
-                        ...(maxWidth ? { flex: 1 } : {}),
-                        ...column.cellStyle,
-                      }}
-                    >
-                      {column?.headerComponent ? (
-                        <column.headerComponent {...column} />
-                      ) : (
-                        <div className={styles.headerInnerContainer}>
-                          <div>{column.headerName}</div>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            {isLoading ? (
-              <NativeReactLoading />
-            ) : (
-              <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-                {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                  const element = dataTable[virtualRow.index];
-
-                  return (
-                    <div
-                      key={element.id}
-                      ref={(el) => {
-                        rowSecondTableRefs.current[element.id] = el;
-                      }}
-                      style={{
-                        ...(maxWidth ? { width: "100%", display: "flex" } : {}),
-                        ...bodyStyle,
-                        // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
-                        position: "absolute",
-                        transform: `translateY(${virtualRow.start}px)`,
+                        ...(maxWidth ? { display: "flex" } : {}),
+                        ...headerStyle,
                       }}
                     >
                       {columns.map((column: ColumnType) => {
                         if (column?.pinned) return null;
 
-                        const isBorder = isBorderRight && lastPinned?.field !== column.field;
-
                         return (
-                          <FirstLevelItem
+                          <div
                             key={column.field}
-                            element={element}
-                            row={virtualRow}
-                            column={column}
-                            scrollRef={tableContainerRef}
-                            onSetExpandIndexes={onSetExpandIndexes}
-                            heightAbove={generateNestedItemsTopItemsCount(element.id) + 1}
-                            expanded={expandedIndexes?.includes(element.id)}
-                            isBorderRight={isBorder ?? true}
-                            isBorderTop={isBorderTop}
-                            expandedIndexes={expandedIndexes}
-                            heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
-                            generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
-                            api={api}
-                          />
+                            className={clsx(styles.headerInner, {
+                              [styles.borderRight]: isBorderRight,
+                            })}
+                            style={{
+                              ...(maxWidth ? { flex: 1 } : {}),
+                              ...column.cellStyle,
+                            }}
+                          >
+                            {column?.headerComponent ? (
+                              <column.headerComponent {...column} />
+                            ) : (
+                              <div className={styles.headerInnerContainer}>
+                                <div>{column.headerName}</div>
+                              </div>
+                            )}
+                          </div>
                         );
                       })}
                     </div>
-                  );
-                })}
-              </div>
-            )}
+                  </div>
+                  {isLoading ? (
+                    <NativeReactLoading />
+                  ) : (
+                    <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
+                      {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                        const element = dataTable[virtualRow.index];
+
+                        return (
+                          <div
+                            key={element.id}
+                            ref={(el) => {
+                              rowSecondTableRefs.current[element.id] = el;
+                            }}
+                            style={{
+                              ...(maxWidth ? { width: "100%", display: "flex" } : {}),
+                              ...bodyStyle,
+                              // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                              position: "absolute",
+                              transform: `translateY(${virtualRow.start}px)`,
+                            }}
+                          >
+                            {columns.map((column: ColumnType) => {
+                              if (column?.pinned) return null;
+
+                              const isBorder = isBorderRight && lastPinned?.field !== column.field;
+
+                              return (
+                                <FirstLevelItem
+                                  key={column.field}
+                                  element={element}
+                                  row={virtualRow}
+                                  column={column}
+                                  scrollRef={tableContainerRef}
+                                  onSetExpandIndexes={onSetExpandIndexes}
+                                  heightAbove={generateNestedItemsTopItemsCount(element.id) + 1}
+                                  expanded={expandedIndexes?.includes(element.id)}
+                                  isBorderRight={isBorder ?? true}
+                                  isBorderTop={isBorderTop}
+                                  expandedIndexes={expandedIndexes}
+                                  heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
+                                  generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
+                                  api={api}
+                                />
+                              );
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

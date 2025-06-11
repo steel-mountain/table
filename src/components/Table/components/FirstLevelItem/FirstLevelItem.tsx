@@ -1,6 +1,8 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import axios from "axios";
 import clsx from "clsx";
-import { FC, RefObject, useCallback, useEffect } from "react";
+import { Dispatch, FC, RefObject, SetStateAction, useCallback, useEffect, useMemo } from "react";
 import { CellLoader } from "../../../CellLoader/CellLoader";
 import { SecondLevelItem } from "../SecondLevelItem/SecondLevelItem";
 import { ApiType, ColumnType } from "../types/types";
@@ -21,6 +23,8 @@ interface FirstLevelItemProps {
   api: ApiType;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
   generateNestedItemsTopItemsCount: (index: number | string) => number;
+  isFirst?: boolean;
+  setChilds?: Dispatch<SetStateAction<Record<string, any[]>>>;
 }
 
 const defaultWidthCell = 60;
@@ -39,36 +43,60 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   api,
   onSetExpandIndexes,
   generateNestedItemsTopItemsCount,
+  isFirst,
+  setChilds,
 }) => {
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, isFetched } = useInfiniteQuery({
+    queryKey: ["nested elements", element.id],
+    queryFn: (ctx) => axios.get(`http://localhost:3000/children?_page=${ctx.pageParam}&_per_page=25`),
+    getNextPageParam: (lastGroup) => lastGroup.data.next,
+    initialPageParam: 1,
+    enabled: !!expanded,
+  });
+
+  const children = useMemo(() => {
+    return data?.pages?.flatMap((el) => el.data)?.flatMap((el) => el.data);
+  }, [data?.pages]);
+
+  useEffect(() => {
+    setChilds?.((prev) => ({
+      ...prev,
+      [element.id]: children,
+    }));
+  }, [children]);
+
   const rowVirtualizer = useVirtualizer({
-    count: element?.children?.length ?? 0,
+    count: children?.length ?? 0,
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: (i) => {
-      const id = element?.children?.[i]?.id;
+      const id = children?.[i]?.id;
 
       if (expandedIndexes.includes(id)) {
-        return heightRow + element?.children?.[i]?.children?.length * heightRow;
+        return heightRow + children?.[i]?.children?.length * heightRow;
       }
 
       return heightRow;
     },
     overscan: 3,
-    enabled: !!element?.children?.length && !!scrollRef.current && expanded,
+    enabled: !!children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
 
   useEffect(() => {
-    const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
+    if (isFirst) {
+      const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
 
-    if (!lastItem) {
-      return;
-    }
+      if (!lastItem) {
+        return;
+      }
 
-    if (lastItem.index) {
-      console.log("отработал");
+      if (lastItem.index >= children?.length - 1 && hasNextPage && !isFetchingNextPage) {
+        console.log("CALLLL");
+        fetchNextPage();
+      }
     }
-  }, [rowVirtualizer.getVirtualItems()]);
+  }, [hasNextPage, fetchNextPage, children?.length, isFetchingNextPage, rowVirtualizer.getVirtualItems()]);
 
   useEffect(() => {
     rowVirtualizer.measure();
@@ -109,7 +137,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
         }}
         onClick={() => {
           column?.onCellClick?.({ rowData: element, column, row });
-          onSetExpandIndexes?.(element.id, true, element.children);
+          onSetExpandIndexes?.(element.id, true, children);
         }}
         data-id={element.id}
         onMouseLeave={onMouseLeave}
@@ -131,7 +159,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
           )}
         </div>
       </div>
-      {!!element && !!element?.children?.length && expanded && (
+      {!!element && !!children?.length && expanded && (
         <div
           style={{
             minWidth: column?.cellStyle?.minWidth || defaultWidthCell,
@@ -145,7 +173,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-              const row = element.children?.[virtualRow.index];
+              const row = children?.[virtualRow.index];
 
               return (
                 <div

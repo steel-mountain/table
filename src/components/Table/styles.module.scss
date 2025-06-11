@@ -9,6 +9,9 @@
 }
 
 .tableContainer {
+  // НИКОГДА НЕ УДАЛЯТЬ ИНАЧЕ ВСЕ СЛОМАЕТСЯ (СКРОЛЛ)
+  background-color: white;
+
   &::-webkit-scrollbar {
     width: 8px;
     height: 8px;

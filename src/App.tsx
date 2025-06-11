@@ -1,17 +1,28 @@
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { CustomTable } from "./components/Table/Table";
-import { columnsTable, generateDataItems } from "./constants/constants";
+import { columnsTable } from "./constants/constants";
 import "./styles.scss";
 
 function App() {
   const [isLoading, setLoading] = useState(false);
 
-  const dataTable = useMemo(() => {
-    return generateDataItems(40, 5, 5);
-  }, []);
+  // const dataTable2 = useMemo(() => {
+  //   return generateDataItems(40, 5, 5);
+  // }, []);
+
+  const { data } = useQuery({
+    queryKey: ["blalba"],
+    queryFn: () => axios.get("http://localhost:3000/parents"),
+  });
+
+  const dataTable = data?.data;
 
   useEffect(() => {
-    console.log(dataTable);
+    if (dataTable) {
+      console.log(dataTable);
+    }
   }, [dataTable]);
 
   const columns = useMemo(() => columnsTable, []);
@@ -31,8 +42,8 @@ function App() {
 
   return (
     <div className="app">
-      <div id="table" style={{ width: "100%", height: "100vh" }}>
-        <CustomTable columns={columns} data={dataTable} isLoading={isLoading} tableProps={tableProps} />
+      <div id="table" style={{ width: "100%", height: "100vh", display: "flex" }}>
+        {dataTable && <CustomTable columns={columns} data={dataTable} isLoading={isLoading} tableProps={tableProps} />}
       </div>
     </div>
   );
