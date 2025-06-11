@@ -42,7 +42,7 @@ interface Column {
 }
 
 export interface DataTableType {
-  id?: number | string;
+  id: number | string;
   amount: number | string;
   vehicle?: Vehicle;
   totally: string;

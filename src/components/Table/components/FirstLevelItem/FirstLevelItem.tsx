@@ -1,6 +1,6 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
-import { FC, RefObject, useEffect } from "react";
+import { FC, RefObject, useCallback, useEffect } from "react";
 import { SecondLevelItem } from "../SecondLevelItem/SecondLevelItem";
 import { ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
@@ -13,11 +13,12 @@ interface FirstLevelItemProps {
   heightAbove: number;
   expanded: boolean;
   isBorderRight?: boolean;
-  isBorderBottom?: boolean;
+  isBorderTop?: boolean;
   expandedIndexes: Array<number | string>;
   key: number | string;
   heightRow: number;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
+  generateNestedItemsTopItemsCount: (index: number | string) => number;
 }
 
 const defaultWidthCell = 60;
@@ -30,26 +31,25 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   heightAbove,
   expanded,
   isBorderRight,
-  isBorderBottom,
+  isBorderTop,
   expandedIndexes,
   heightRow,
   onSetExpandIndexes,
+  generateNestedItemsTopItemsCount,
 }) => {
-  // console.log(heightAbove, heightRow, element?.vehicle?.reg_number);
-
-  //TODO Скролл в компоненте SecondLevelItem как будто бы вообще никак не трогает
-  // В том смысле, что, когда скроллим вниз то дочерние элементы никак не пропадают, пока не пропадет
-  // родитель (это заметно когда меняем в этом компоненте overscan).
-  // Высота и размеры родителей, детей => grandдетей все нормально вроде.
-  // При том что меняя overscan в SecondLevelItem
-  // то никаких признаков. Возможно виртуализатор не работает в SecondLevelItem,
-  // либо настроен неправильно
-
   const rowVirtualizer = useVirtualizer({
     count: element?.children?.length ?? 0,
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
-    estimateSize: () => heightRow,
+    estimateSize: (i) => {
+      const id = element?.children?.[i]?.id;
+
+      if (expandedIndexes.includes(id)) {
+        return heightRow + element?.children?.[i]?.children?.length * heightRow;
+      }
+
+      return heightRow;
+    },
     overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
@@ -59,44 +59,21 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     rowVirtualizer.measure();
   }, [expandedIndexes]);
 
-  const generateNestedItemsTopItemsCount = (index: number) => {
-    let totalItemsCount: number = 1;
-    const elements = element?.children ?? [];
-    for (let i = 0; i < elements.length; i++) {
-      if (index === i) break;
+  const onMouseLeave = useCallback(() => {
+    const cells = document.querySelectorAll<HTMLDivElement>("[data-id]");
+    cells.forEach((cell) => {
+      cell.classList.remove(styles.cellHover);
+    });
+  }, []);
 
-      const element = elements[i];
-
-      totalItemsCount += 1;
-
-      if (expandedIndexes.includes(element.id)) {
-        totalItemsCount += element?.children?.length ?? 0;
+  const onMouseEnter = useCallback((rowId: number | string) => {
+    const cells = document.querySelectorAll<HTMLDivElement>("[data-id]");
+    cells.forEach((cell) => {
+      if (cell.dataset.id === rowId) {
+        cell.classList.add(styles.cellHover);
       }
-    }
-
-    return totalItemsCount;
-  };
-
-  const calculateOffsetBeforeIndex = (index: number): number => {
-    const rowHeight = heightRow;
-    const children = element?.children ?? [];
-    let offset = 0;
-
-    for (let i = 0; i < index; i++) {
-      const child = children[i];
-
-      if (expandedIndexes.includes(child.id)) {
-        offset += (child.children?.length ?? 0) * rowHeight;
-      }
-    }
-
-    return offset;
-  };
-
-  const getRowHeightWithChildren = (rowData: any) => {
-    if (!expandedIndexes.includes(rowData.id)) return heightRow;
-    return heightRow + (rowData.children?.length ?? 0) * heightRow;
-  };
+    });
+  }, []);
 
   return (
     <div
@@ -110,7 +87,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
         key={header.field}
         className={clsx(styles.bodyInner, {
           [styles.borderRight]: isBorderRight,
-          [styles.borderBottom]: isBorderBottom,
+          [styles.borderTop]: isBorderTop,
         })}
         style={{
           ...header.cellStyle,
@@ -119,9 +96,12 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
           header?.onCellClick?.({ rowData: element, column: header, row });
           onSetExpandIndexes?.(element.id, true, element.children);
         }}
+        data-id={element.id}
+        onMouseLeave={onMouseLeave}
+        onMouseEnter={() => onMouseEnter(element.id)}
       >
         <div className={styles.bodyInnerContainer}>
-          <div>{header?.valueGetter ? header.valueGetter(element) + "" : element[header.field] ?? ""}</div>
+          <div>{header?.valueGetter ? header.valueGetter(element) : element[header.field] ?? ""}</div>
         </div>
       </div>
       {!!element && !!element?.children?.length && expanded && (
@@ -134,46 +114,37 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
           <div
             style={{
               position: "relative",
-              // height: `${rowVirtualizer.getTotalSize()}px`,
-              height: `${
-                +rowVirtualizer.getTotalSize() +
-                +expandedIndexes.reduce((sum, id) => {
-                  const item = element.children.find((el: any) => el.id === id);
-                  return +sum + (item?.children?.length ?? 0) * heightRow;
-                }, 0)
-              }px`,
+              height: `${rowVirtualizer.getTotalSize()}px`,
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-              const rowData = element.children?.[virtualRow.index];
-
-              const offset = calculateOffsetBeforeIndex(virtualRow.index);
-              const totalHeight = getRowHeightWithChildren(rowData);
+              const row = element.children?.[virtualRow.index];
 
               return (
                 <div
-                  id={`first-${heightAbove}`}
                   key={virtualRow.index}
                   style={{
-                    height: `${virtualRow.size}px`,
-                    // height: totalHeight,
-                    transform: `translateY(${virtualRow.start - heightRow * heightAbove + offset}px)`,
+                    // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                    transform: `translateY(${virtualRow.start - heightRow * heightAbove}px)`,
                     position: "absolute",
                     top: 0,
                     left: 0,
                     width: "100%",
                   }}
+                  data-id={row.id}
+                  onMouseLeave={onMouseLeave}
+                  onMouseEnter={() => onMouseEnter(row.id)}
                 >
                   <SecondLevelItem
-                    element={rowData}
+                    element={row}
                     row={virtualRow}
                     header={header}
                     scrollRef={scrollRef}
                     onSetExpandIndexes={onSetExpandIndexes}
-                    heightAbove={generateNestedItemsTopItemsCount(virtualRow.index) + heightAbove}
-                    expanded={expandedIndexes?.includes(rowData.id)}
+                    heightAbove={generateNestedItemsTopItemsCount(row.id) + 1}
+                    expanded={expandedIndexes?.includes(row.id)}
                     isBorderRight={isBorderRight}
-                    isBorderBottom={isBorderBottom}
+                    isBorderTop={isBorderTop}
                     heightRow={heightRow}
                     expandedIndexes={expandedIndexes}
                   />

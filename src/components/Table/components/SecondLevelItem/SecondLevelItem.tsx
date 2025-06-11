@@ -1,6 +1,6 @@
 import { useVirtualizer } from "@tanstack/react-virtual";
 import clsx from "clsx";
-import { FC, RefObject, useEffect } from "react";
+import { FC, RefObject, useCallback, useEffect } from "react";
 import { ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
 
@@ -12,7 +12,7 @@ interface SecondLevelItemProps {
   heightAbove: number;
   expanded: boolean;
   isBorderRight?: boolean;
-  isBorderBottom?: boolean;
+  isBorderTop?: boolean;
   heightRow: number;
   expandedIndexes: Array<number | string>;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
@@ -28,7 +28,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   expanded,
   row,
   isBorderRight,
-  isBorderBottom,
+  isBorderTop,
   heightRow,
   expandedIndexes,
   onSetExpandIndexes,
@@ -38,7 +38,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => heightRow,
-    overscan: 2,
+    overscan: 3,
     enabled: !!element?.children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
@@ -47,23 +47,25 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
     rowVirtualizer.measure();
   }, [expandedIndexes]);
 
-  if (!!element && !!element?.children?.length && expanded) {
-    // console.log(heightAbove, heightRow, element?.vehicle?.reg_number, element?.children);
-    console.log({
-      count: element?.children?.length ?? 0,
-      scrollMargin: expanded ? heightAbove * heightRow : 0,
-      getScrollElement: () => scrollRef.current,
-      estimateSize: () => heightRow,
-      overscan: 2,
-      enabled: !!element?.children?.length && !!scrollRef.current && expanded,
-      scrollToFn: () => {},
+  const onMouseLeave = useCallback(() => {
+    const cells = document.querySelectorAll<HTMLDivElement>("[data-id]");
+    cells.forEach((cell) => {
+      cell.classList.remove(styles.cellHover);
     });
-  }
+  }, []);
+
+  const onMouseEnter = useCallback((rowId: number | string) => {
+    const cells = document.querySelectorAll<HTMLDivElement>("[data-id]");
+    cells.forEach((cell) => {
+      if (cell.dataset.id === rowId) {
+        cell.classList.add(styles.cellHover);
+      }
+    });
+  }, []);
 
   return (
     <div
       style={{
-        backgroundColor: "red",
         ...header.cellStyle,
       }}
     >
@@ -71,10 +73,10 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
         key={header.field}
         className={clsx(styles.bodyInner, {
           [styles.borderRight]: isBorderRight,
-          [styles.borderBottom]: isBorderBottom,
+          [styles.borderTop]: isBorderTop,
         })}
         style={{
-          backgroundColor: "green",
+          // backgroundColor: "green",
           height: heightRow,
           minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
           ...header.cellStyle,
@@ -97,7 +99,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           <div
             style={{
               position: "relative",
-              height: `${rowVirtualizer.getTotalSize()}px`,
+              // height: `${rowVirtualizer.getTotalSize()}px`, // для hover эффекта закоменчено
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
@@ -106,7 +108,6 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
               return (
                 <div
                   key={virtualRow.index}
-                  id={`second-${heightAbove}`}
                   style={{
                     height: `${virtualRow.size}px`,
                     transform: `translateY(${virtualRow.start - heightRow * heightAbove}px)`,
@@ -115,17 +116,21 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
                     left: 0,
                     width: "100%",
                   }}
+                  data-id={rowData.id}
+                  onMouseLeave={onMouseLeave}
+                  onMouseEnter={() => onMouseEnter(rowData.id)}
                 >
                   <div
                     key={header.field}
                     className={clsx(styles.bodyInner, {
                       [styles.borderRight]: isBorderRight,
-                      [styles.borderBottom]: isBorderBottom,
+                      [styles.borderTop]: isBorderTop,
                     })}
                     style={{
                       ...header.cellStyle,
                       minWidth: header?.cellStyle?.minWidth || defaultWidthCell,
                       height: heightRow,
+                      // backgroundColor: "red",
                     }}
                     onClick={() => {
                       header?.onCellClick?.({ rowData, column: header, row });

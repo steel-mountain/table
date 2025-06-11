@@ -15,7 +15,7 @@ interface CustomTableProps {
     wrapperStyle?: React.CSSProperties;
     isHeaderSticky?: boolean;
     isBorderRight?: boolean;
-    isBorderBottom?: boolean;
+    isBorderTop?: boolean;
     enableColumnVirtualizer?: boolean;
     maxWidth?: boolean;
     headerStyle: React.CSSProperties;
@@ -34,7 +34,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     headerStyle,
     bodyStyle,
     isBorderRight = true,
-    isBorderBottom = true,
+    isBorderTop = true,
     enableColumnVirtualizer = false,
     maxWidth,
   } = tableProps ?? {};
@@ -53,6 +53,17 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
   }, [data]);
 
   useEffect(() => {
+    const styleSheet = document.styleSheets[0];
+    const rule = `.${styles.tableContainer}::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        margin-left: ${childFirstTableRef?.current?.clientWidth}px;
+        margin-top: ${headerStyle?.height ?? defaultHeightRow}px;
+      }`;
+
+    styleSheet.insertRule(rule, styleSheet.cssRules.length);
+  }, [columns]);
+
+  useEffect(() => {
     rowVirtualizer.measure();
   }, [expandedIndexes]);
 
@@ -68,7 +79,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
   const rowVirtualizer = useVirtualizer({
     count: dataTable.length,
     getScrollElement: () => tableContainerRef.current,
-    estimateSize: (i: number) => {
+    estimateSize: (i) => {
       const rowHeight = +(headerStyle?.height ?? defaultHeightRow);
       const row = dataTable[i];
       if (!row) return rowHeight;
@@ -77,49 +88,10 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
         const visibleDescendantsCount = countVisibleDescendants(row, expandedIndexes);
         return rowHeight + visibleDescendantsCount * rowHeight;
       }
-
-      return rowHeight;
+      return defaultHeightRow;
     },
     overscan: 3,
   });
-
-  const generateNestedItemsTopItemsCount = (index: number) => {
-    let totalItemsCount: number = 1;
-    for (let i = 0; i < dataTable.length; i++) {
-      if (index === i) break;
-
-      const element = dataTable[i];
-
-      totalItemsCount += 1;
-
-      if (expandedIndexes.includes(element.id)) {
-        totalItemsCount += element?.children?.length ?? 0;
-      }
-    }
-
-    return totalItemsCount;
-  };
-
-  const lastPinned = useMemo(() => {
-    return columns.filter((item: any) => item?.pinned).at(-1);
-  }, [columns]);
-
-  const onSetExpandIndexes = useCallback((id: string | number, isParent?: boolean, children?: any) => {
-    setExpandedIndexes((prev) => {
-      const isExpanded = prev.includes(id);
-
-      if (isExpanded) {
-        if (isParent) {
-          const childIds = children.map((child: any) => child.id);
-          return prev.filter((item) => item !== id && !childIds.includes(item));
-        }
-
-        return prev.filter((item) => item !== id);
-      }
-
-      return [...prev, id];
-    });
-  }, []);
 
   useEffect(() => {
     const virtualItems = rowVirtualizer.getVirtualItems();
@@ -131,6 +103,76 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
       // console.log("Последний элемент в зоне видимости!");
     }
   }, [rowVirtualizer.getVirtualItems()]);
+
+  const generateNestedItemsTopItemsCount = useCallback(
+    (id: number | string) => {
+      let count = 0;
+      let found = false;
+
+      function traverse(items: any[]) {
+        for (const item of items) {
+          if (found) return;
+
+          if (item.id === id) {
+            found = true;
+            return;
+          }
+
+          count++;
+
+          if (expandedIndexes.includes(item.id) && item.children) {
+            traverse(item.children);
+          }
+        }
+      }
+
+      traverse(dataTable);
+      return count;
+    },
+    [expandedIndexes]
+  );
+
+  const onSetExpandIndexes = useCallback(
+    (id: string | number, isParent?: boolean, children?: any) => {
+      setExpandedIndexes((prev) => {
+        const isExpanded = prev.includes(id);
+
+        if (isExpanded) {
+          if (isParent) {
+            const childIds = children.map((child: any) => child.id);
+            return prev.filter((item) => item !== id && !childIds.includes(item));
+          }
+
+          return prev.filter((item) => item !== id);
+        }
+
+        return [...prev, id];
+      });
+    },
+    [expandedIndexes]
+  );
+
+  const lastPinned = useMemo(() => {
+    return columns.filter((item: any) => item?.pinned).at(-1);
+  }, [columns]);
+
+  const onMouseLeave = useCallback((index: number) => {
+    const rowFirstTable = rowFirstTableRefs.current[index];
+    const rowSecondTable = rowSecondTableRefs.current[index];
+    if (rowFirstTable && rowSecondTable) {
+      rowFirstTable.classList.remove(styles.cellHover);
+      rowSecondTable.classList.remove(styles.cellHover);
+    }
+  }, []);
+
+  const onMouseEnter = useCallback((index: number) => {
+    const rowFirstTable = rowFirstTableRefs.current[index];
+    const rowSecondTable = rowSecondTableRefs.current[index];
+    if (rowFirstTable && rowSecondTable) {
+      rowFirstTable.classList.add(styles.cellHover);
+      rowSecondTable.classList.add(styles.cellHover);
+    }
+  }, []);
 
   const memoizedColums = useMemo(() => columns, [columns]);
 
@@ -184,24 +226,26 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
             </div>
             <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
               {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-                const rowData = dataTable[virtualRow.index];
+                const row = dataTable[virtualRow.index];
 
                 return (
                   <div
-                    key={rowData.id}
+                    key={row.id}
                     ref={(el) => {
-                      rowFirstTableRefs.current[rowData.id] = el;
+                      rowFirstTableRefs.current[row.id] = el;
                     }}
                     style={{
                       position: "absolute",
                       top: 0,
                       left: 0,
                       width: "100%",
-                      height: `${virtualRow.size}px`,
                       transform: `translateY(${virtualRow.start}px)`,
                       display: "flex",
                       ...bodyStyle,
+                      // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
                     }}
+                    // onMouseLeave={() => onMouseLeave(row.id)}
+                    // onMouseEnter={() => onMouseEnter(row.id)}
                   >
                     {memoizedColums.map((column: ColumnType) => {
                       if (!column?.pinned) return null;
@@ -210,17 +254,18 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       return (
                         <FirstLevelItem
                           key={column.field}
-                          element={rowData}
+                          element={row}
                           row={virtualRow}
                           header={column}
                           scrollRef={tableContainerRef}
                           onSetExpandIndexes={onSetExpandIndexes}
-                          heightAbove={generateNestedItemsTopItemsCount(virtualRow.index)}
-                          expanded={expandedIndexes?.includes(rowData.id)}
+                          heightAbove={generateNestedItemsTopItemsCount(row.id) + 1}
+                          expanded={expandedIndexes?.includes(row.id)}
                           isBorderRight={isBorder ?? true}
-                          isBorderBottom={isBorderBottom}
+                          isBorderTop={isBorderTop}
                           expandedIndexes={expandedIndexes}
                           heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
+                          generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
                         />
                       );
                     })}
@@ -231,7 +276,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
           </div>
         </div>
       </>
-      {/* <div style={{ width: "100%" }}>
+      <div style={{ width: "100%" }}>
         {enableColumnVirtualizer ? (
           <div
             ref={childSecondTableRef}
@@ -356,22 +401,24 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
               </div>
             </div>
             <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
-              {rowVirtualizer.getVirtualItems().map((row) => {
-                const rowData = dataTable[row.index];
+              {rowVirtualizer.getVirtualItems().map((virtualRow) => {
+                const row = dataTable[virtualRow.index];
 
                 return (
                   <div
-                    className={styles.row}
-                    key={rowData.id}
+                    key={row.id}
                     ref={(el) => {
-                      rowSecondTableRefs.current[rowData.id] = el;
+                      rowSecondTableRefs.current[row.id] = el;
                     }}
                     style={{
-                      position: "absolute",
-                      transform: `translateY(${row.start}px)`,
                       ...(maxWidth ? { width: "100%", display: "flex" } : {}),
                       ...bodyStyle,
+                      // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                      position: "absolute",
+                      transform: `translateY(${virtualRow.start}px)`,
                     }}
+                    // onMouseLeave={() => onMouseLeave(row.id)}
+                    // onMouseEnter={() => onMouseEnter(row.id)}
                   >
                     {columns.map((column: ColumnType) => {
                       if (column?.pinned) return null;
@@ -381,17 +428,18 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       return (
                         <FirstLevelItem
                           key={column.field}
-                          element={rowData}
-                          row={row}
+                          element={row}
+                          row={virtualRow}
                           header={column}
                           scrollRef={tableContainerRef}
                           onSetExpandIndexes={onSetExpandIndexes}
-                          heightAbove={generateNestedItemsTopItemsCount(row.index) + 1}
-                          expanded={expandedIndexes?.includes(rowData.id)}
-                          isBorderRight={isBorder ?? false}
-                          isBorderBottom={isBorderBottom}
+                          heightAbove={generateNestedItemsTopItemsCount(row.id) + 1}
+                          expanded={expandedIndexes?.includes(row.id)}
+                          isBorderRight={isBorder ?? true}
+                          isBorderTop={isBorderTop}
                           expandedIndexes={expandedIndexes}
                           heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
+                          generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
                         />
                       );
                     })}
@@ -401,7 +449,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
             </div>
           </div>
         )}
-      </div> */}
+      </div>
     </div>
   );
 });
