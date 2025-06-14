@@ -25,6 +25,7 @@ interface FirstLevelItemProps {
   generateNestedItemsTopItemsCount: (index: number | string) => number;
   isFirst?: boolean;
   setChilds?: Dispatch<SetStateAction<Record<string, any[]>>>;
+  // setChilds?: Dispatch<SetStateAction<any[]>>;
 }
 
 const defaultWidthCell = 60;
@@ -46,7 +47,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   isFirst,
   setChilds,
 }) => {
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isSuccess, isFetched } = useInfiniteQuery({
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["nested elements", element.id],
     queryFn: (ctx) => axios.get(`http://localhost:3000/children?_page=${ctx.pageParam}&_per_page=25`),
     getNextPageParam: (lastGroup) => lastGroup.data.next,
@@ -55,7 +56,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   });
 
   const children = useMemo(() => {
-    return data?.pages?.flatMap((el) => el.data)?.flatMap((el) => el.data);
+    return data?.pages?.flatMap((page) => page.data.data) ?? [];
   }, [data?.pages]);
 
   useEffect(() => {
@@ -64,6 +65,12 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
       [element.id]: children,
     }));
   }, [children]);
+
+  // useEffect(() => {
+  //   setChilds?.((prev) => {
+  //     return prev.map((item) => (item.id === element.id ? { ...item, children } : item));
+  //   });
+  // }, [element.id, setChilds, children]);
 
   const rowVirtualizer = useVirtualizer({
     count: children?.length ?? 0,
@@ -175,11 +182,13 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const row = children?.[virtualRow.index];
 
+              // console.log(heightAbove, virtualRow);
+
               return (
                 <div
                   key={virtualRow.index}
                   style={{
-                    // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                    height: `${virtualRow.size}px`, // для hover эффекта закоменчено
                     transform: `translateY(${virtualRow.start - heightRow * heightAbove}px)`,
                     position: "absolute",
                     top: 0,

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { CustomTable } from "./components/Table/Table";
 import { columnsTable } from "./constants/constants";
 import "./styles.scss";
@@ -18,12 +18,6 @@ function App() {
   });
 
   const dataTable = data?.data;
-
-  useEffect(() => {
-    if (dataTable) {
-      console.log(dataTable);
-    }
-  }, [dataTable]);
 
   const columns = useMemo(() => columnsTable, []);
 

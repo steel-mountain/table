@@ -41,6 +41,8 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
   } = tableProps ?? {};
 
   const [dataTable, setDataTable] = useState<any[]>([]);
+  const [childs, setChilds] = useState<Record<string, any[]>>({});
+  // const [childs, setChilds] = useState<any[]>([]);
   const [expandedIndexes, setExpandedIndexes] = useState<Array<number | string>>([]);
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -51,6 +53,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
   useEffect(() => {
     setDataTable(data);
+    // setChilds(data);
   }, [data]);
 
   useEffect(() => {
@@ -76,8 +79,6 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
         horizontal: true,
       })
     : null;
-
-  const [childs, setChilds] = useState<Record<string, any[]>>({});
 
   const rowVirtualizer = useVirtualizer({
     count: dataTable.length,
@@ -141,6 +142,38 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     },
     [expandedIndexes, childs]
   );
+
+  // const generateNestedItemsTopItemsCount = useCallback(
+  //   (id: number | string) => {
+  //     let count = 0;
+  //     let found = false;
+
+  //     function traverse(items: any[]) {
+  //       for (const item of items) {
+  //         if (found) return;
+
+  //         if (item.id === id) {
+  //           found = true;
+  //           return;
+  //         }
+
+  //         count++;
+
+  //         // const children = childs[item.id];
+
+  //         // console.log(children);
+
+  //         if (expandedIndexes.includes(item.id) && item.children) {
+  //           traverse(item.children);
+  //         }
+  //       }
+  //     }
+  //     console.log(childs);
+  //     traverse(childs);
+  //     return count;
+  //   },
+  //   [expandedIndexes, childs]
+  // );
 
   const onSetExpandIndexes = useCallback(
     (id: string | number, isParent?: boolean, children?: any) => {
@@ -256,6 +289,8 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                     <div style={{ position: "relative", height: rowVirtualizer.getTotalSize() }}>
                       {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                         const element = dataTable[virtualRow.index];
+
+                        // console.log(generateNestedItemsTopItemsCount(element.id) + 1, virtualRow);
 
                         return (
                           <div
