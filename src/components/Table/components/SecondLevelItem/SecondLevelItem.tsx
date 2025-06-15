@@ -1,6 +1,8 @@
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import axios from "axios";
 import clsx from "clsx";
-import { FC, RefObject, useCallback, useEffect } from "react";
+import { Dispatch, FC, RefObject, SetStateAction, useCallback, useEffect, useMemo } from "react";
 import { CellLoader } from "../../../CellLoader/CellLoader";
 import { ApiType, ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
@@ -18,6 +20,9 @@ interface SecondLevelItemProps {
   expandedIndexes: Array<number | string>;
   api: ApiType;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
+  isFirst?: boolean;
+  setChilds?: Dispatch<SetStateAction<any[]>>;
+  parentId: number | string;
 }
 
 const defaultWidthCell = 60;
@@ -35,16 +40,92 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   expandedIndexes,
   api,
   onSetExpandIndexes,
+  isFirst,
+  setChilds,
+  parentId,
 }) => {
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
+    queryKey: ["nested grandchildren elements", element.id],
+    queryFn: (ctx) => axios.get(`http://localhost:3000/grandchildren?_page=${ctx.pageParam}&_per_page=25`),
+    getNextPageParam: (lastGroup) => lastGroup.data.next,
+    initialPageParam: 1,
+    enabled: !!expanded,
+  });
+
+  const children = useMemo(() => {
+    if (!expanded) return;
+    const arr = data?.pages?.flatMap((page) => page.data.data) ?? [];
+
+    const generateStableIds = (items: any[], parentPath: string): any[] => {
+      return items.map((item, index) => {
+        const currentId = `${parentPath}-${index}`;
+        return {
+          ...item,
+          id: currentId,
+          children: Array.isArray(item.children) ? generateStableIds(item.children, currentId) : [],
+        };
+      });
+    };
+
+    const newChildren = generateStableIds(arr, element.id);
+
+    return newChildren;
+  }, [data?.pages]);
+
+  useEffect(() => {
+    if (!expanded) return;
+
+    setChilds?.((prev) => {
+      const updateChildren = (items: any[], parentId: string | number, element: string | number): any[] => {
+        return items.map((item) => {
+          if (item.id === parentId) {
+            return {
+              ...item,
+              children: updateChildren(item.children || [], parentId, element),
+            };
+          }
+
+          if (item.id === element) {
+            return {
+              ...item,
+              children,
+            };
+          }
+
+          return item;
+        });
+      };
+
+      const updated = updateChildren(prev, parentId, element.id);
+
+      return updated;
+    });
+  }, [element.id, setChilds, children, parentId]);
+
   const rowVirtualizer = useVirtualizer({
-    count: element?.children?.length ?? 0,
+    count: children?.length ?? 0,
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: () => heightRow,
     overscan: 3,
-    enabled: !!element?.children?.length && !!scrollRef.current && expanded,
+    enabled: !!children?.length && !!scrollRef.current && expanded,
     scrollToFn: () => {},
   });
+
+  useEffect(() => {
+    if (isFirst) {
+      const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
+
+      if (!lastItem) {
+        return;
+      }
+
+      if (lastItem.index >= children?.length - 1 && hasNextPage && !isFetchingNextPage) {
+        console.log("CALLLL");
+        fetchNextPage();
+      }
+    }
+  }, [hasNextPage, fetchNextPage, children?.length, isFetchingNextPage, rowVirtualizer.getVirtualItems()]);
 
   useEffect(() => {
     rowVirtualizer.measure();
@@ -104,7 +185,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           )}
         </div>
       </div>
-      {!!element && !!element?.children?.length && expanded && (
+      {!!element && !!children?.length && expanded && (
         <div
           style={{
             minWidth: column?.cellStyle?.minWidth || defaultWidthCell,
@@ -118,9 +199,9 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
-              const rowData = element.children?.[virtualRow.index];
+              const rowData = children?.[virtualRow.index];
 
-              console.log(heightAbove, virtualRow);
+              // console.log(heightAbove, virtualRow);
 
               return (
                 <div

@@ -25,6 +25,7 @@ interface FirstLevelItemProps {
   generateNestedItemsTopItemsCount: (index: number | string) => number;
   isFirst?: boolean;
   setChilds?: Dispatch<SetStateAction<any[]>>;
+  childs: any[];
 }
 
 const defaultWidthCell = 60;
@@ -45,6 +46,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   generateNestedItemsTopItemsCount,
   isFirst,
   setChilds,
+  childs = [],
 }) => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["nested elements", element.id],
@@ -55,6 +57,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   });
 
   const children = useMemo(() => {
+    if (!expanded) return;
     const arr = data?.pages?.flatMap((page) => page.data.data) ?? [];
 
     const generateStableIds = (items: any[], parentPath: string): any[] => {
@@ -74,6 +77,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   }, [data?.pages]);
 
   useEffect(() => {
+    if (!expanded) return;
     setChilds?.((prev) => {
       const arr = prev.map((item) => (item.id === element.id ? { ...item, children } : item));
       return arr;
@@ -85,10 +89,13 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: (i) => {
-      const id = children?.[i]?.id;
+      if (childs[row.index]) {
+        const id = childs[row.index].children?.[i]?.id;
 
-      if (expandedIndexes.includes(id)) {
-        return heightRow + children?.[i]?.children?.length * heightRow;
+        if (expandedIndexes.includes(id)) {
+          return heightRow + childs[row.index].children?.[i]?.children?.length * heightRow;
+        }
+        return heightRow;
       }
 
       return heightRow;
@@ -115,7 +122,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
 
   useEffect(() => {
     rowVirtualizer.measure();
-  }, [expandedIndexes]);
+  }, [expandedIndexes, childs[row.index]]);
 
   const onMouseLeave = useCallback(() => {
     const cells = document.querySelectorAll<HTMLDivElement>("[data-id]");
@@ -190,7 +197,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const row = children?.[virtualRow.index];
 
-              console.log(heightAbove, virtualRow);
+              // console.log(heightAbove, virtualRow);
 
               return (
                 <div
@@ -220,6 +227,9 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     heightRow={heightRow}
                     expandedIndexes={expandedIndexes}
                     api={api}
+                    isFirst={virtualRow.index === 0}
+                    setChilds={setChilds}
+                    parentId={element.id}
                   />
                 </div>
               );

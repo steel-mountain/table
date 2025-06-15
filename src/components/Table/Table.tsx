@@ -205,6 +205,10 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     [columns]
   );
 
+  // useEffect(() => {
+  //   console.log(childs);
+  // }, [childs]);
+
   return (
     <div
       style={{
@@ -283,7 +287,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                         const element = dataTable[virtualRow.index];
 
-                        console.log(generateNestedItemsTopItemsCount(element.id) + 1, virtualRow);
+                        // console.log(generateNestedItemsTopItemsCount(element.id) + 1, virtualRow);
 
                         return (
                           <div
@@ -325,6 +329,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                                   api={api}
                                   isFirst={index === 0}
                                   setChilds={setChilds}
+                                  childs={childs}
                                 />
                               );
                             })}
@@ -502,6 +507,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                                   heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
                                   generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
                                   api={api}
+                                  childs={childs}
                                 />
                               );
                             })}
