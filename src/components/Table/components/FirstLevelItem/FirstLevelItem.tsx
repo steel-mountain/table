@@ -108,7 +108,6 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   useEffect(() => {
     if (isFirst) {
       const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
-
       if (!lastItem) {
         return;
       }
@@ -227,7 +226,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     heightRow={heightRow}
                     expandedIndexes={expandedIndexes}
                     api={api}
-                    isFirst={virtualRow.index === 0}
+                    isFirst={isFirst}
                     setChilds={setChilds}
                     parentId={element.id}
                   />

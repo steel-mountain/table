@@ -9,6 +9,7 @@ function App() {
   const [isLoading, setLoading] = useState(false);
 
   // const dataTable2 = useMemo(() => {
+  //   console.log(generateDataItems(100, 50, 50));
   //   return generateDataItems(5, 5, 5);
   // }, []);
 

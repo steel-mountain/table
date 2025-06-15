@@ -224,11 +224,11 @@
   ],
   "children": [
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "1 - 82ca5e6f-79b4-4799-b21b-d042f437e8eb",
+      "amount": "6.1",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-1-third",
         "vin_number": "",
         "count": 12
       },
@@ -241,7 +241,7 @@
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -268,24 +268,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "2 - ab7ed444-2b64-4e5f-ac80-7c1493e85d28",
+      "amount": "6.2",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-2-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 2.2",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -312,24 +312,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "3 - 3facdda4-e4a1-48ec-a211-b11be1941fc3",
+      "amount": "6.3",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-3-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 3.3",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -356,24 +356,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "4 - f1eec55f-2837-4560-ac8c-7295eb52f0c5",
+      "amount": "6.4",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-4-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 4.4",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -400,24 +400,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "5 - 4f662a9f-4fa3-4001-ada4-b4fc3ed29123",
+      "amount": "6.5",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-5-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 5.5",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -444,24 +444,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "6 - 7b5c1a6c-b59d-44d3-9a07-bc858b2e68ab",
+      "amount": "6.6",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-6-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 6.6",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -488,24 +488,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "7 - 8257e951-f63c-496e-9552-59e3eff7ca5d",
+      "amount": "6.7",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-7-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 7.7",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -532,24 +532,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "8 - a8c67f35-b740-4bf3-9c5d-f08d50962d96",
+      "amount": "6.8",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-8-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 8.8",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -576,24 +576,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "9 - 9073f4e4-3bcd-4107-88ca-73e37a89bb97",
+      "amount": "6.9",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-9-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 9.9",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -620,24 +620,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "10 - 06da2dc6-2398-4a78-b009-8a6fe553d455",
+      "amount": "6.10",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-10-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 10.10",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -664,24 +664,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "11 - 34bd9ffd-82df-4b53-87d4-bca617312712",
+      "amount": "6.11",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-11-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 11.11",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -708,24 +708,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "12 - 69c1c2a7-42e0-4cc9-8101-58abed7e2696",
+      "amount": "6.12",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-12-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 12.12",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -752,24 +752,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "13 - b636c72a-9fb1-4dea-b800-244f1298cca3",
+      "amount": "6.13",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-13-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 13.13",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -796,24 +796,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "14 - a2b8a38f-841b-4192-a2b2-c49c894a2b0e",
+      "amount": "6.14",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-14-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 14.14",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -840,24 +840,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "15 - d5b00681-ea79-4235-8610-88f8b3ef612e",
+      "amount": "6.15",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-15-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 15.15",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -884,24 +884,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "16 - 00989eb8-f2af-4588-b72c-464c55011f0d",
+      "amount": "6.16",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-16-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 16.16",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -928,24 +928,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "17 - 96b71c25-9567-4de3-9789-d4bd26827ac4",
+      "amount": "6.17",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-17-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 17.17",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -972,24 +972,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "18 - 52b48f3a-330c-4eb1-95a0-43deb9a93cba",
+      "amount": "6.18",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-18-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 18.18",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1016,24 +1016,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "19 - e4b296ee-a644-4cc2-9b4e-24d0cb2c2fc6",
+      "amount": "6.19",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-19-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 19.19",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1060,24 +1060,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "20 - 72c45378-e514-44be-87e0-f77f19abf17b",
+      "amount": "6.20",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-20-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 20.20",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1104,24 +1104,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "21 - ca19f1a3-71ef-41a1-80cd-bec775511de3",
+      "amount": "6.21",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-21-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 21.21",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1148,24 +1148,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "22 - bba9fe57-14c1-4a39-bbb9-4e25f81d8b31",
+      "amount": "6.22",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-22-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 22.22",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1192,24 +1192,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "23 - 9e75c152-d88b-413d-a904-d3d8ef57b694",
+      "amount": "6.23",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-23-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 23.23",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1236,24 +1236,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "24 - bda6753a-0642-48ea-85a6-9b983e6c6a11",
+      "amount": "6.24",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-24-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 24.24",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1280,24 +1280,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "25 - 0436291f-9880-4318-99a8-1fa0486c2f44",
+      "amount": "6.25",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-25-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 25.25",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1324,24 +1324,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "26 - 87fbb431-8a1e-4c63-a9ea-7ca69e2b54e2",
+      "amount": "6.26",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-26-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 26.26",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1368,24 +1368,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "27 - f3cae4f3-7a4e-4517-abd2-e8a5de63359b",
+      "amount": "6.27",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-27-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 27.27",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1412,24 +1412,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "28 - 36fc8f01-fe5c-428f-bf51-2051191a8e2d",
+      "amount": "6.28",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-28-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 28.28",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1456,24 +1456,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "29 - 63a38b99-08ac-427d-925c-d3028989dc6d",
+      "amount": "6.29",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-29-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 29.29",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1500,24 +1500,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "30 - 948a9735-15ad-41a6-a7be-69f4296d827e",
+      "amount": "6.30",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-30-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 30.30",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1544,24 +1544,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "31 - 8ca05857-3ed2-46d1-a12b-d9b21290ec94",
+      "amount": "6.31",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-31-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 31.31",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1588,24 +1588,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "32 - 571660d2-dd37-4071-a8d0-e9f9a5b37c11",
+      "amount": "6.32",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-32-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 32.32",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1632,24 +1632,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "33 - ea428a46-5efd-46ef-ad9d-9a5eb05be3eb",
+      "amount": "6.33",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-33-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 33.33",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1676,24 +1676,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "34 - 0c3644ea-e0fe-4f3f-8a4b-ce923b225279",
+      "amount": "6.34",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-34-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 34.34",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1720,24 +1720,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "35 - a18fb2f2-e0c2-4f5c-9197-8f484a75fbea",
+      "amount": "6.35",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-35-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 35.35",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1764,24 +1764,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "36 - b099eea2-f05d-4104-b5d1-e4f6c35e6938",
+      "amount": "6.36",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-36-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 36.36",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1808,24 +1808,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "37 - 11742d1e-dbc7-479d-8bfa-aa368abd53fd",
+      "amount": "6.37",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-37-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 37.37",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1852,24 +1852,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "38 - 963c39f8-4766-4c40-8465-bc301dce4381",
+      "amount": "6.38",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-38-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 38.38",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1896,24 +1896,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "39 - ce0022b6-ba2f-441b-a968-c0e031aadf5f",
+      "amount": "6.39",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-39-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 39.39",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1940,24 +1940,24 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "40 - 82c615aa-c3d5-49d7-93bc-e866f4e6ab0f",
+      "amount": "6.40",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-40-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 40.40",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -1984,24 +1984,24 @@
       "children": []
     },
     {
-      "id": "1 - af6e034534523f-90cd-4615-abc2-f9bf7e17304ddvcxxd",
-      "amount": "1.1",
+      "id": "41 - 8d91e4e6-4c2e-4449-b643-8131462e28e1",
+      "amount": "6.41",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-second",
+        "reg_number": "number-41-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 41.41",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.1",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -2028,24 +2028,24 @@
       "children": []
     },
     {
-      "id": "2 - c267c126-f460-4efc-bbdertret2-3cd032dcaea6",
-      "amount": "1.2",
+      "id": "42 - a7077741-70ce-471a-a4a1-a366033beb26",
+      "amount": "6.42",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-second",
+        "reg_number": "number-42-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.2",
+        "fio": "Statham 42.42",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.2",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -2072,24 +2072,24 @@
       "children": []
     },
     {
-      "id": "3 - 6236554a-4c8e-4567792-9634-a8[898b7b6357",
-      "amount": "1.3",
+      "id": "43 - ae6a2e66-31c8-4123-ba6d-3abffb06d441",
+      "amount": "6.43",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-second",
+        "reg_number": "number-43-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.3",
+        "fio": "Statham 43.43",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.3",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -2116,24 +2116,24 @@
       "children": []
     },
     {
-      "id": "4 - e1a673fsdf5-a883-4e52-be00-34c523c3d204",
-      "amount": "1.4",
+      "id": "44 - 04c3298d-695d-4e09-8d22-58c7ce8c65e8",
+      "amount": "6.44",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-second",
+        "reg_number": "number-44-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.4",
+        "fio": "Statham 44.44",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.4",
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -2160,24 +2160,244 @@
       "children": []
     },
     {
-      "id": "5 - f60ea6fe-4a6f-4dc0-b603-cvb6acc31f437e1",
-      "amount": "1.5",
+      "id": "45 - 2d35efc8-18b6-44c1-93f4-257093a46f65",
+      "amount": "6.45",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-second",
+        "reg_number": "number-45-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.5",
+        "fio": "Statham 45.45",
         "count": 15
       },
       "gas_station": {
         "name": "noName",
         "count_name": 25,
-        "operator": "Татнефть 1.5",
+        "operator": "Татнефть",
+        "count_operator": 10
+      },
+      "date_time": {
+        "moscow_time": "27.02.2025",
+        "threshold_exceeded": false
+      },
+      "coordinates": {
+        "latitude": 21,
+        "longitude": 15
+      },
+      "events": {
+        "1": 1
+      },
+      "volume_of_fuel_filled": 200,
+      "volume_of_fuel_paid": 200,
+      "difference_in_volume": {
+        "number": 20,
+        "percent": 20
+      },
+      "column": {
+        "id": 1,
+        "name": "Колонна №1"
+      },
+      "children": []
+    },
+    {
+      "id": "46 - e1887cfe-4f61-4e1a-964c-8d61f862e97f",
+      "amount": "6.46",
+      "vehicle": {
+        "id": 0,
+        "reg_number": "number-46-third",
+        "vin_number": "",
+        "count": 12
+      },
+      "totally": "group",
+      "driver": {
+        "id": 1,
+        "fio": "Statham 46.46",
+        "count": 15
+      },
+      "gas_station": {
+        "name": "noName",
+        "count_name": 25,
+        "operator": "Татнефть",
+        "count_operator": 10
+      },
+      "date_time": {
+        "moscow_time": "27.02.2025",
+        "threshold_exceeded": false
+      },
+      "coordinates": {
+        "latitude": 21,
+        "longitude": 15
+      },
+      "events": {
+        "1": 1
+      },
+      "volume_of_fuel_filled": 200,
+      "volume_of_fuel_paid": 200,
+      "difference_in_volume": {
+        "number": 20,
+        "percent": 20
+      },
+      "column": {
+        "id": 1,
+        "name": "Колонна №1"
+      },
+      "children": []
+    },
+    {
+      "id": "47 - 5c36580e-922f-48aa-a2b7-c83cf3dde046",
+      "amount": "6.47",
+      "vehicle": {
+        "id": 0,
+        "reg_number": "number-47-third",
+        "vin_number": "",
+        "count": 12
+      },
+      "totally": "group",
+      "driver": {
+        "id": 1,
+        "fio": "Statham 47.47",
+        "count": 15
+      },
+      "gas_station": {
+        "name": "noName",
+        "count_name": 25,
+        "operator": "Татнефть",
+        "count_operator": 10
+      },
+      "date_time": {
+        "moscow_time": "27.02.2025",
+        "threshold_exceeded": false
+      },
+      "coordinates": {
+        "latitude": 21,
+        "longitude": 15
+      },
+      "events": {
+        "1": 1
+      },
+      "volume_of_fuel_filled": 200,
+      "volume_of_fuel_paid": 200,
+      "difference_in_volume": {
+        "number": 20,
+        "percent": 20
+      },
+      "column": {
+        "id": 1,
+        "name": "Колонна №1"
+      },
+      "children": []
+    },
+    {
+      "id": "48 - 8e97c758-294f-4d50-b459-458f590804e0",
+      "amount": "6.48",
+      "vehicle": {
+        "id": 0,
+        "reg_number": "number-48-third",
+        "vin_number": "",
+        "count": 12
+      },
+      "totally": "group",
+      "driver": {
+        "id": 1,
+        "fio": "Statham 48.48",
+        "count": 15
+      },
+      "gas_station": {
+        "name": "noName",
+        "count_name": 25,
+        "operator": "Татнефть",
+        "count_operator": 10
+      },
+      "date_time": {
+        "moscow_time": "27.02.2025",
+        "threshold_exceeded": false
+      },
+      "coordinates": {
+        "latitude": 21,
+        "longitude": 15
+      },
+      "events": {
+        "1": 1
+      },
+      "volume_of_fuel_filled": 200,
+      "volume_of_fuel_paid": 200,
+      "difference_in_volume": {
+        "number": 20,
+        "percent": 20
+      },
+      "column": {
+        "id": 1,
+        "name": "Колонна №1"
+      },
+      "children": []
+    },
+    {
+      "id": "49 - 74c9e3a6-06ab-4e1c-8a8b-2817a23fd40f",
+      "amount": "6.49",
+      "vehicle": {
+        "id": 0,
+        "reg_number": "number-49-third",
+        "vin_number": "",
+        "count": 12
+      },
+      "totally": "group",
+      "driver": {
+        "id": 1,
+        "fio": "Statham 49.49",
+        "count": 15
+      },
+      "gas_station": {
+        "name": "noName",
+        "count_name": 25,
+        "operator": "Татнефть",
+        "count_operator": 10
+      },
+      "date_time": {
+        "moscow_time": "27.02.2025",
+        "threshold_exceeded": false
+      },
+      "coordinates": {
+        "latitude": 21,
+        "longitude": 15
+      },
+      "events": {
+        "1": 1
+      },
+      "volume_of_fuel_filled": 200,
+      "volume_of_fuel_paid": 200,
+      "difference_in_volume": {
+        "number": 20,
+        "percent": 20
+      },
+      "column": {
+        "id": 1,
+        "name": "Колонна №1"
+      },
+      "children": []
+    },
+    {
+      "id": "50 - fe8ad8f1-86dc-41e0-96ee-222405e55384",
+      "amount": "6.50",
+      "vehicle": {
+        "id": 0,
+        "reg_number": "number-50-third",
+        "vin_number": "",
+        "count": 12
+      },
+      "totally": "group",
+      "driver": {
+        "id": 1,
+        "fio": "Statham 50.50",
+        "count": 15
+      },
+      "gas_station": {
+        "name": "noName",
+        "count_name": 25,
+        "operator": "Татнефть",
         "count_operator": 10
       },
       "date_time": {
@@ -2206,8 +2426,8 @@
   ],
   "grandchildren": [
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "1 - 82ca5e6f-79b4-4799-b21b-d042f437e8eb",
+      "amount": "6.1",
       "vehicle": {
         "id": 0,
         "reg_number": "number-1-third",
@@ -2250,8 +2470,8 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "2 - ab7ed444-2b64-4e5f-ac80-7c1493e85d28",
+      "amount": "6.2",
       "vehicle": {
         "id": 0,
         "reg_number": "number-2-third",
@@ -2294,8 +2514,8 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "3 - 3facdda4-e4a1-48ec-a211-b11be1941fc3",
+      "amount": "6.3",
       "vehicle": {
         "id": 0,
         "reg_number": "number-3-third",
@@ -2338,8 +2558,8 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "4 - f1eec55f-2837-4560-ac8c-7295eb52f0c5",
+      "amount": "6.4",
       "vehicle": {
         "id": 0,
         "reg_number": "number-4-third",
@@ -2382,8 +2602,8 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "5 - 4f662a9f-4fa3-4001-ada4-b4fc3ed29123",
+      "amount": "6.5",
       "vehicle": {
         "id": 0,
         "reg_number": "number-5-third",
@@ -2426,18 +2646,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "6 - 7b5c1a6c-b59d-44d3-9a07-bc858b2e68ab",
+      "amount": "6.6",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-6-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 6.6",
         "count": 15
       },
       "gas_station": {
@@ -2470,18 +2690,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "7 - 8257e951-f63c-496e-9552-59e3eff7ca5d",
+      "amount": "6.7",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-7-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 7.7",
         "count": 15
       },
       "gas_station": {
@@ -2514,18 +2734,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "8 - a8c67f35-b740-4bf3-9c5d-f08d50962d96",
+      "amount": "6.8",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-8-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 8.8",
         "count": 15
       },
       "gas_station": {
@@ -2558,18 +2778,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "9 - 9073f4e4-3bcd-4107-88ca-73e37a89bb97",
+      "amount": "6.9",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-9-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 9.9",
         "count": 15
       },
       "gas_station": {
@@ -2602,18 +2822,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "10 - 06da2dc6-2398-4a78-b009-8a6fe553d455",
+      "amount": "6.10",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-10-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 10.10",
         "count": 15
       },
       "gas_station": {
@@ -2646,18 +2866,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "11 - 34bd9ffd-82df-4b53-87d4-bca617312712",
+      "amount": "6.11",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-11-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 11.11",
         "count": 15
       },
       "gas_station": {
@@ -2690,18 +2910,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "12 - 69c1c2a7-42e0-4cc9-8101-58abed7e2696",
+      "amount": "6.12",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-12-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 12.12",
         "count": 15
       },
       "gas_station": {
@@ -2734,18 +2954,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "13 - b636c72a-9fb1-4dea-b800-244f1298cca3",
+      "amount": "6.13",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-13-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 13.13",
         "count": 15
       },
       "gas_station": {
@@ -2778,18 +2998,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "14 - a2b8a38f-841b-4192-a2b2-c49c894a2b0e",
+      "amount": "6.14",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-14-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 14.14",
         "count": 15
       },
       "gas_station": {
@@ -2822,18 +3042,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "15 - d5b00681-ea79-4235-8610-88f8b3ef612e",
+      "amount": "6.15",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-15-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 15.15",
         "count": 15
       },
       "gas_station": {
@@ -2866,18 +3086,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "16 - 00989eb8-f2af-4588-b72c-464c55011f0d",
+      "amount": "6.16",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-16-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 16.16",
         "count": 15
       },
       "gas_station": {
@@ -2910,18 +3130,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "17 - 96b71c25-9567-4de3-9789-d4bd26827ac4",
+      "amount": "6.17",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-17-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 17.17",
         "count": 15
       },
       "gas_station": {
@@ -2954,18 +3174,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "18 - 52b48f3a-330c-4eb1-95a0-43deb9a93cba",
+      "amount": "6.18",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-18-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 18.18",
         "count": 15
       },
       "gas_station": {
@@ -2998,18 +3218,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "19 - e4b296ee-a644-4cc2-9b4e-24d0cb2c2fc6",
+      "amount": "6.19",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-19-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 19.19",
         "count": 15
       },
       "gas_station": {
@@ -3042,18 +3262,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "20 - 72c45378-e514-44be-87e0-f77f19abf17b",
+      "amount": "6.20",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-20-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 20.20",
         "count": 15
       },
       "gas_station": {
@@ -3086,18 +3306,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "21 - ca19f1a3-71ef-41a1-80cd-bec775511de3",
+      "amount": "6.21",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-21-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 21.21",
         "count": 15
       },
       "gas_station": {
@@ -3130,18 +3350,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "22 - bba9fe57-14c1-4a39-bbb9-4e25f81d8b31",
+      "amount": "6.22",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-22-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 22.22",
         "count": 15
       },
       "gas_station": {
@@ -3174,18 +3394,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "23 - 9e75c152-d88b-413d-a904-d3d8ef57b694",
+      "amount": "6.23",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-23-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 23.23",
         "count": 15
       },
       "gas_station": {
@@ -3218,18 +3438,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "24 - bda6753a-0642-48ea-85a6-9b983e6c6a11",
+      "amount": "6.24",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-24-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 24.24",
         "count": 15
       },
       "gas_station": {
@@ -3262,18 +3482,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "25 - 0436291f-9880-4318-99a8-1fa0486c2f44",
+      "amount": "6.25",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-25-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 25.25",
         "count": 15
       },
       "gas_station": {
@@ -3306,18 +3526,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "26 - 87fbb431-8a1e-4c63-a9ea-7ca69e2b54e2",
+      "amount": "6.26",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-26-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 26.26",
         "count": 15
       },
       "gas_station": {
@@ -3350,18 +3570,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "27 - f3cae4f3-7a4e-4517-abd2-e8a5de63359b",
+      "amount": "6.27",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-27-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 27.27",
         "count": 15
       },
       "gas_station": {
@@ -3394,18 +3614,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "28 - 36fc8f01-fe5c-428f-bf51-2051191a8e2d",
+      "amount": "6.28",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-28-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 28.28",
         "count": 15
       },
       "gas_station": {
@@ -3438,18 +3658,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "29 - 63a38b99-08ac-427d-925c-d3028989dc6d",
+      "amount": "6.29",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-29-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 29.29",
         "count": 15
       },
       "gas_station": {
@@ -3482,18 +3702,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "30 - 948a9735-15ad-41a6-a7be-69f4296d827e",
+      "amount": "6.30",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-30-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 30.30",
         "count": 15
       },
       "gas_station": {
@@ -3526,18 +3746,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "31 - 8ca05857-3ed2-46d1-a12b-d9b21290ec94",
+      "amount": "6.31",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-31-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 31.31",
         "count": 15
       },
       "gas_station": {
@@ -3570,18 +3790,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "32 - 571660d2-dd37-4071-a8d0-e9f9a5b37c11",
+      "amount": "6.32",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-32-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 32.32",
         "count": 15
       },
       "gas_station": {
@@ -3614,18 +3834,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "33 - ea428a46-5efd-46ef-ad9d-9a5eb05be3eb",
+      "amount": "6.33",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-33-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 33.33",
         "count": 15
       },
       "gas_station": {
@@ -3658,18 +3878,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "34 - 0c3644ea-e0fe-4f3f-8a4b-ce923b225279",
+      "amount": "6.34",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-34-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 34.34",
         "count": 15
       },
       "gas_station": {
@@ -3702,18 +3922,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "35 - a18fb2f2-e0c2-4f5c-9197-8f484a75fbea",
+      "amount": "6.35",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-35-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 35.35",
         "count": 15
       },
       "gas_station": {
@@ -3746,18 +3966,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "36 - b099eea2-f05d-4104-b5d1-e4f6c35e6938",
+      "amount": "6.36",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-36-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 36.36",
         "count": 15
       },
       "gas_station": {
@@ -3790,18 +4010,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "37 - 11742d1e-dbc7-479d-8bfa-aa368abd53fd",
+      "amount": "6.37",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-37-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 37.37",
         "count": 15
       },
       "gas_station": {
@@ -3834,18 +4054,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "38 - 963c39f8-4766-4c40-8465-bc301dce4381",
+      "amount": "6.38",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-38-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 38.38",
         "count": 15
       },
       "gas_station": {
@@ -3878,18 +4098,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "39 - ce0022b6-ba2f-441b-a968-c0e031aadf5f",
+      "amount": "6.39",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-39-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 39.39",
         "count": 15
       },
       "gas_station": {
@@ -3922,18 +4142,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "40 - 82c615aa-c3d5-49d7-93bc-e866f4e6ab0f",
+      "amount": "6.40",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-40-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 40.40",
         "count": 15
       },
       "gas_station": {
@@ -3966,18 +4186,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "41 - 8d91e4e6-4c2e-4449-b643-8131462e28e1",
+      "amount": "6.41",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-41-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 41.41",
         "count": 15
       },
       "gas_station": {
@@ -4010,18 +4230,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "42 - a7077741-70ce-471a-a4a1-a366033beb26",
+      "amount": "6.42",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-42-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 42.42",
         "count": 15
       },
       "gas_station": {
@@ -4054,18 +4274,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "43 - ae6a2e66-31c8-4123-ba6d-3abffb06d441",
+      "amount": "6.43",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-43-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 43.43",
         "count": 15
       },
       "gas_station": {
@@ -4098,18 +4318,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "44 - 04c3298d-695d-4e09-8d22-58c7ce8c65e8",
+      "amount": "6.44",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-44-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 44.44",
         "count": 15
       },
       "gas_station": {
@@ -4142,18 +4362,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "45 - 2d35efc8-18b6-44c1-93f4-257093a46f65",
+      "amount": "6.45",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-45-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 45.45",
         "count": 15
       },
       "gas_station": {
@@ -4186,18 +4406,18 @@
       "children": []
     },
     {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
+      "id": "46 - e1887cfe-4f61-4e1a-964c-8d61f862e97f",
+      "amount": "6.46",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-1-third",
+        "reg_number": "number-46-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 1.1",
+        "fio": "Statham 46.46",
         "count": 15
       },
       "gas_station": {
@@ -4230,18 +4450,18 @@
       "children": []
     },
     {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
+      "id": "47 - 5c36580e-922f-48aa-a2b7-c83cf3dde046",
+      "amount": "6.47",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-2-third",
+        "reg_number": "number-47-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 2.2",
+        "fio": "Statham 47.47",
         "count": 15
       },
       "gas_station": {
@@ -4274,18 +4494,18 @@
       "children": []
     },
     {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
+      "id": "48 - 8e97c758-294f-4d50-b459-458f590804e0",
+      "amount": "6.48",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-3-third",
+        "reg_number": "number-48-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 3.3",
+        "fio": "Statham 48.48",
         "count": 15
       },
       "gas_station": {
@@ -4318,18 +4538,18 @@
       "children": []
     },
     {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
+      "id": "49 - 74c9e3a6-06ab-4e1c-8a8b-2817a23fd40f",
+      "amount": "6.49",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-4-third",
+        "reg_number": "number-49-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 4.4",
+        "fio": "Statham 49.49",
         "count": 15
       },
       "gas_station": {
@@ -4362,238 +4582,18 @@
       "children": []
     },
     {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
+      "id": "50 - fe8ad8f1-86dc-41e0-96ee-222405e55384",
+      "amount": "6.50",
       "vehicle": {
         "id": 0,
-        "reg_number": "number-5-third",
+        "reg_number": "number-50-third",
         "vin_number": "",
         "count": 12
       },
       "totally": "group",
       "driver": {
         "id": 1,
-        "fio": "Statham 5.5",
-        "count": 15
-      },
-      "gas_station": {
-        "name": "noName",
-        "count_name": 25,
-        "operator": "Татнефть",
-        "count_operator": 10
-      },
-      "date_time": {
-        "moscow_time": "27.02.2025",
-        "threshold_exceeded": false
-      },
-      "coordinates": {
-        "latitude": 21,
-        "longitude": 15
-      },
-      "events": {
-        "1": 1
-      },
-      "volume_of_fuel_filled": 200,
-      "volume_of_fuel_paid": 200,
-      "difference_in_volume": {
-        "number": 20,
-        "percent": 20
-      },
-      "column": {
-        "id": 1,
-        "name": "Колонна №1"
-      },
-      "children": []
-    },
-    {
-      "id": "1 - c8a278f6-ed00-4a1c-asdf785-e8e44c47b483",
-      "amount": "1.1",
-      "vehicle": {
-        "id": 0,
-        "reg_number": "number-1-third",
-        "vin_number": "",
-        "count": 12
-      },
-      "totally": "group",
-      "driver": {
-        "id": 1,
-        "fio": "Statham 1.1",
-        "count": 15
-      },
-      "gas_station": {
-        "name": "noName",
-        "count_name": 25,
-        "operator": "Татнефть",
-        "count_operator": 10
-      },
-      "date_time": {
-        "moscow_time": "27.02.2025",
-        "threshold_exceeded": false
-      },
-      "coordinates": {
-        "latitude": 21,
-        "longitude": 15
-      },
-      "events": {
-        "1": 1
-      },
-      "volume_of_fuel_filled": 200,
-      "volume_of_fuel_paid": 200,
-      "difference_in_volume": {
-        "number": 20,
-        "percent": 20
-      },
-      "column": {
-        "id": 1,
-        "name": "Колонна №1"
-      },
-      "children": []
-    },
-    {
-      "id": "2 - 49c572f0-df4c-4yhy6f7-9eb5-46c476d389f7",
-      "amount": "1.2",
-      "vehicle": {
-        "id": 0,
-        "reg_number": "number-2-third",
-        "vin_number": "",
-        "count": 12
-      },
-      "totally": "group",
-      "driver": {
-        "id": 1,
-        "fio": "Statham 2.2",
-        "count": 15
-      },
-      "gas_station": {
-        "name": "noName",
-        "count_name": 25,
-        "operator": "Татнефть",
-        "count_operator": 10
-      },
-      "date_time": {
-        "moscow_time": "27.02.2025",
-        "threshold_exceeded": false
-      },
-      "coordinates": {
-        "latitude": 21,
-        "longitude": 15
-      },
-      "events": {
-        "1": 1
-      },
-      "volume_of_fuel_filled": 200,
-      "volume_of_fuel_paid": 200,
-      "difference_in_volume": {
-        "number": 20,
-        "percent": 20
-      },
-      "column": {
-        "id": 1,
-        "name": "Колонна №1"
-      },
-      "children": []
-    },
-    {
-      "id": "3 - e5e0804d-449b-40e7-a6c7-9rtrt3a06709ffe0",
-      "amount": "1.3",
-      "vehicle": {
-        "id": 0,
-        "reg_number": "number-3-third",
-        "vin_number": "",
-        "count": 12
-      },
-      "totally": "group",
-      "driver": {
-        "id": 1,
-        "fio": "Statham 3.3",
-        "count": 15
-      },
-      "gas_station": {
-        "name": "noName",
-        "count_name": 25,
-        "operator": "Татнефть",
-        "count_operator": 10
-      },
-      "date_time": {
-        "moscow_time": "27.02.2025",
-        "threshold_exceeded": false
-      },
-      "coordinates": {
-        "latitude": 21,
-        "longitude": 15
-      },
-      "events": {
-        "1": 1
-      },
-      "volume_of_fuel_filled": 200,
-      "volume_of_fuel_paid": 200,
-      "difference_in_volume": {
-        "number": 20,
-        "percent": 20
-      },
-      "column": {
-        "id": 1,
-        "name": "Колонна №1"
-      },
-      "children": []
-    },
-    {
-      "id": "4 - 3433cf1a-0cfe-4ffa-93iki54-9143fc68c6ce",
-      "amount": "1.4",
-      "vehicle": {
-        "id": 0,
-        "reg_number": "number-4-third",
-        "vin_number": "",
-        "count": 12
-      },
-      "totally": "group",
-      "driver": {
-        "id": 1,
-        "fio": "Statham 4.4",
-        "count": 15
-      },
-      "gas_station": {
-        "name": "noName",
-        "count_name": 25,
-        "operator": "Татнефть",
-        "count_operator": 10
-      },
-      "date_time": {
-        "moscow_time": "27.02.2025",
-        "threshold_exceeded": false
-      },
-      "coordinates": {
-        "latitude": 21,
-        "longitude": 15
-      },
-      "events": {
-        "1": 1
-      },
-      "volume_of_fuel_filled": 200,
-      "volume_of_fuel_paid": 200,
-      "difference_in_volume": {
-        "number": 20,
-        "percent": 20
-      },
-      "column": {
-        "id": 1,
-        "name": "Колонна №1"
-      },
-      "children": []
-    },
-    {
-      "id": "5 - 5dc580f8-3157-4a57-b90e-0648kiki5711a940",
-      "amount": "1.5",
-      "vehicle": {
-        "id": 0,
-        "reg_number": "number-5-third",
-        "vin_number": "",
-        "count": 12
-      },
-      "totally": "group",
-      "driver": {
-        "id": 1,
-        "fio": "Statham 5.5",
+        "fio": "Statham 50.50",
         "count": 15
       },
       "gas_station": {
