@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { CustomTable } from "./components/Table/Table";
+import { generateStableIds } from "./components/Table/utils/utils";
 import { columnsTable } from "./constants/constants";
 import "./styles.scss";
 
@@ -9,20 +10,22 @@ function App() {
   const [isLoading, setLoading] = useState(false);
 
   // const dataTable2 = useMemo(() => {
-  //   console.log(generateDataItems(100, 50, 50));
+  //   console.log(generateDataItems(50, 50, 50));
   //   return generateDataItems(5, 5, 5);
   // }, []);
 
-  const { data } = useQuery({
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["parents"],
-    queryFn: () => axios.get("http://localhost:3000/parents"),
+    queryFn: (ctx) => axios.get(`http://localhost:3000/parents?_page=${ctx.pageParam}&_per_page=25`),
+    getNextPageParam: (lastGroup) => lastGroup.data.next,
+    initialPageParam: 1,
   });
 
-  const dataTable = data?.data;
+  const dataTable = useMemo(() => {
+    const arr = data?.pages?.flatMap((page) => page.data.data) ?? [];
 
-  useEffect(() => {
-    console.log(dataTable);
-  }, [dataTable]);
+    return generateStableIds(arr, "test");
+  }, [data?.pages]);
 
   const columns = useMemo(() => columnsTable, []);
 
@@ -42,7 +45,17 @@ function App() {
   return (
     <div className="app">
       <div id="table" style={{ width: "100%", height: "100vh", display: "flex" }}>
-        {dataTable && <CustomTable columns={columns} data={dataTable} isLoading={isLoading} tableProps={tableProps} />}
+        {dataTable && (
+          <CustomTable
+            columns={columns}
+            data={dataTable}
+            isLoading={isLoading}
+            tableProps={tableProps}
+            isFetchingNextPage={isFetchingNextPage}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+          />
+        )}
       </div>
     </div>
   );
