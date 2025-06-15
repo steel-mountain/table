@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CustomTable } from "./components/Table/Table";
 import { columnsTable } from "./constants/constants";
 import "./styles.scss";
@@ -9,7 +9,7 @@ function App() {
   const [isLoading, setLoading] = useState(false);
 
   // const dataTable2 = useMemo(() => {
-  //   return generateDataItems(40, 5, 5);
+  //   return generateDataItems(5, 5, 5);
   // }, []);
 
   const { data } = useQuery({
@@ -18,6 +18,10 @@ function App() {
   });
 
   const dataTable = data?.data;
+
+  useEffect(() => {
+    console.log(dataTable);
+  }, [dataTable]);
 
   const columns = useMemo(() => columnsTable, []);
 

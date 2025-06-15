@@ -114,13 +114,13 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
           <div
             style={{
               position: "relative",
-              height: `${rowVirtualizer.getTotalSize()}px`, // для hover эффекта закоменчено
+              // height: `${rowVirtualizer.getTotalSize()}px`, // для hover эффекта закоменчено
             }}
           >
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const rowData = element.children?.[virtualRow.index];
 
-              // console.log(heightAbove, virtualRow);
+              console.log(heightAbove, virtualRow);
 
               return (
                 <div

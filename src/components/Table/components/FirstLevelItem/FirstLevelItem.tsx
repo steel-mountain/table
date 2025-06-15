@@ -24,8 +24,7 @@ interface FirstLevelItemProps {
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
   generateNestedItemsTopItemsCount: (index: number | string) => number;
   isFirst?: boolean;
-  setChilds?: Dispatch<SetStateAction<Record<string, any[]>>>;
-  // setChilds?: Dispatch<SetStateAction<any[]>>;
+  setChilds?: Dispatch<SetStateAction<any[]>>;
 }
 
 const defaultWidthCell = 60;
@@ -56,21 +55,30 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   });
 
   const children = useMemo(() => {
-    return data?.pages?.flatMap((page) => page.data.data) ?? [];
+    const arr = data?.pages?.flatMap((page) => page.data.data) ?? [];
+
+    const generateStableIds = (items: any[], parentPath: string): any[] => {
+      return items.map((item, index) => {
+        const currentId = `${parentPath}-${index}`;
+        return {
+          ...item,
+          id: currentId,
+          children: Array.isArray(item.children) ? generateStableIds(item.children, currentId) : [],
+        };
+      });
+    };
+
+    const newChildren = generateStableIds(arr, element.id);
+
+    return newChildren;
   }, [data?.pages]);
 
   useEffect(() => {
-    setChilds?.((prev) => ({
-      ...prev,
-      [element.id]: children,
-    }));
-  }, [children]);
-
-  // useEffect(() => {
-  //   setChilds?.((prev) => {
-  //     return prev.map((item) => (item.id === element.id ? { ...item, children } : item));
-  //   });
-  // }, [element.id, setChilds, children]);
+    setChilds?.((prev) => {
+      const arr = prev.map((item) => (item.id === element.id ? { ...item, children } : item));
+      return arr;
+    });
+  }, [element.id, setChilds, children]);
 
   const rowVirtualizer = useVirtualizer({
     count: children?.length ?? 0,
@@ -182,13 +190,13 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const row = children?.[virtualRow.index];
 
-              // console.log(heightAbove, virtualRow);
+              console.log(heightAbove, virtualRow);
 
               return (
                 <div
                   key={virtualRow.index}
                   style={{
-                    height: `${virtualRow.size}px`, // для hover эффекта закоменчено
+                    // height: `${virtualRow.size}px`, // для hover эффекта закоменчено
                     transform: `translateY(${virtualRow.start - heightRow * heightAbove}px)`,
                     position: "absolute",
                     top: 0,

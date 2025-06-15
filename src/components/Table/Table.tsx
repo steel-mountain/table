@@ -41,8 +41,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
   } = tableProps ?? {};
 
   const [dataTable, setDataTable] = useState<any[]>([]);
-  const [childs, setChilds] = useState<Record<string, any[]>>({});
-  // const [childs, setChilds] = useState<any[]>([]);
+  const [childs, setChilds] = useState<any[]>([]);
   const [expandedIndexes, setExpandedIndexes] = useState<Array<number | string>>([]);
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -53,7 +52,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
   useEffect(() => {
     setDataTable(data);
-    // setChilds(data);
+    setChilds(data);
   }, [data]);
 
   useEffect(() => {
@@ -83,14 +82,12 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
   const rowVirtualizer = useVirtualizer({
     count: dataTable.length,
     getScrollElement: () => tableContainerRef.current,
-
     estimateSize: (i) => {
       const rowHeight = +(headerStyle?.height ?? defaultHeightRow);
-      const element = dataTable[i];
+      const element = childs[i];
 
       if (expandedIndexes.includes(element.id)) {
-        const visibleDescendantsCount = countVisibleDescendants(childs[element.id], expandedIndexes);
-
+        const visibleDescendantsCount = countVisibleDescendants(element, expandedIndexes);
         return rowHeight + visibleDescendantsCount * rowHeight;
       }
       return defaultHeightRow;
@@ -100,7 +97,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
   useEffect(() => {
     rowVirtualizer?.measure();
-  }, [childs]);
+  }, [childs, rowVirtualizer]);
 
   useEffect(() => {
     const virtualItems = rowVirtualizer.getVirtualItems();
@@ -112,36 +109,6 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
       // console.log("Последний элемент в зоне видимости!");
     }
   }, [rowVirtualizer.getVirtualItems()]);
-
-  const generateNestedItemsTopItemsCount = useCallback(
-    (id: number | string) => {
-      let count = 0;
-      let found = false;
-
-      function traverse(items: any[]) {
-        for (const item of items) {
-          if (found) return;
-
-          if (item.id === id) {
-            found = true;
-            return;
-          }
-
-          count++;
-
-          const children = childs[item.id];
-
-          if (expandedIndexes.includes(item.id) && children) {
-            traverse(children);
-          }
-        }
-      }
-
-      traverse(dataTable);
-      return count;
-    },
-    [expandedIndexes, childs]
-  );
 
   // const generateNestedItemsTopItemsCount = useCallback(
   //   (id: number | string) => {
@@ -159,21 +126,47 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
   //         count++;
 
-  //         // const children = childs[item.id];
+  //         const children = childs[item.id];
 
-  //         // console.log(children);
-
-  //         if (expandedIndexes.includes(item.id) && item.children) {
-  //           traverse(item.children);
+  //         if (expandedIndexes.includes(item.id) && children) {
+  //           traverse(children);
   //         }
   //       }
   //     }
-  //     console.log(childs);
-  //     traverse(childs);
+
+  //     traverse(dataTable);
   //     return count;
   //   },
   //   [expandedIndexes, childs]
   // );
+
+  const generateNestedItemsTopItemsCount = useCallback(
+    (id: number | string) => {
+      let count = 0;
+      let found = false;
+
+      function traverse(items: any[]) {
+        for (const item of items) {
+          if (found) return;
+
+          if (item.id === id) {
+            found = true;
+            return;
+          }
+
+          count++;
+
+          if (expandedIndexes.includes(item.id) && item.children) {
+            traverse(item.children);
+          }
+        }
+      }
+
+      traverse(childs);
+      return count;
+    },
+    [expandedIndexes, childs]
+  );
 
   const onSetExpandIndexes = useCallback(
     (id: string | number, isParent?: boolean, children?: any) => {
@@ -221,7 +214,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
         height: "100%",
       }}
     >
-      <button>FFFF</button>
+      <button onClick={() => rowVirtualizer.measure()}>FFFF</button>
       <div
         style={{
           flex: 1,
@@ -290,7 +283,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                       {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                         const element = dataTable[virtualRow.index];
 
-                        // console.log(generateNestedItemsTopItemsCount(element.id) + 1, virtualRow);
+                        console.log(generateNestedItemsTopItemsCount(element.id) + 1, virtualRow);
 
                         return (
                           <div
