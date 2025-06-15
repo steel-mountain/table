@@ -19,10 +19,10 @@ interface SecondLevelItemProps {
   heightRow: number;
   expandedIndexes: Array<number | string>;
   api: ApiType;
-  onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
   isFirst?: boolean;
-  setChilds?: Dispatch<SetStateAction<any[]>>;
   parentId: number | string;
+  setParents?: Dispatch<SetStateAction<any[]>>;
+  onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
 }
 
 const defaultWidthCell = 60;
@@ -41,11 +41,11 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   api,
   onSetExpandIndexes,
   isFirst,
-  setChilds,
+  setParents,
   parentId,
 }) => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["nested grandchildren elements", element.id],
+    queryKey: ["grandchildren", element.id],
     queryFn: (ctx) => axios.get(`http://localhost:3000/grandchildren?_page=${ctx.pageParam}&_per_page=25`),
     getNextPageParam: (lastGroup) => lastGroup.data.next,
     initialPageParam: 1,
@@ -75,7 +75,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
   useEffect(() => {
     if (!expanded) return;
 
-    setChilds?.((prev) => {
+    setParents?.((prev) => {
       const updateChildren = (items: any[], parentId: string | number, element: string | number): any[] => {
         return items.map((item) => {
           if (item.id === parentId) {
@@ -100,7 +100,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
 
       return updated;
     });
-  }, [element.id, setChilds, children, parentId]);
+  }, [element.id, setParents, children, parentId]);
 
   const rowVirtualizer = useVirtualizer({
     count: children?.length ?? 0,

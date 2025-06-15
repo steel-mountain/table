@@ -21,11 +21,11 @@ interface FirstLevelItemProps {
   key: number | string;
   heightRow: number;
   api: ApiType;
+  isFirst?: boolean;
+  parents: any[];
+  setParents?: Dispatch<SetStateAction<any[]>>;
   onSetExpandIndexes: (id: string | number, isParent?: boolean, children?: any[]) => void;
   generateNestedItemsTopItemsCount: (index: number | string) => number;
-  isFirst?: boolean;
-  setChilds?: Dispatch<SetStateAction<any[]>>;
-  childs: any[];
 }
 
 const defaultWidthCell = 60;
@@ -45,11 +45,11 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   onSetExpandIndexes,
   generateNestedItemsTopItemsCount,
   isFirst,
-  setChilds,
-  childs = [],
+  setParents,
+  parents = [],
 }) => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
-    queryKey: ["nested elements", element.id],
+    queryKey: ["children", element.id],
     queryFn: (ctx) => axios.get(`http://localhost:3000/children?_page=${ctx.pageParam}&_per_page=25`),
     getNextPageParam: (lastGroup) => lastGroup.data.next,
     initialPageParam: 1,
@@ -78,22 +78,22 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
 
   useEffect(() => {
     if (!expanded) return;
-    setChilds?.((prev) => {
+    setParents?.((prev) => {
       const arr = prev.map((item) => (item.id === element.id ? { ...item, children } : item));
       return arr;
     });
-  }, [element.id, setChilds, children]);
+  }, [element.id, setParents, children]);
 
   const rowVirtualizer = useVirtualizer({
     count: children?.length ?? 0,
     scrollMargin: expanded ? heightAbove * heightRow : 0,
     getScrollElement: () => scrollRef.current,
     estimateSize: (i) => {
-      if (childs[row.index]) {
-        const id = childs[row.index].children?.[i]?.id;
+      if (parents[row.index]) {
+        const id = parents[row.index].children?.[i]?.id;
 
         if (expandedIndexes.includes(id)) {
-          return heightRow + childs[row.index].children?.[i]?.children?.length * heightRow;
+          return heightRow + parents[row.index].children?.[i]?.children?.length * heightRow;
         }
         return heightRow;
       }
@@ -121,7 +121,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
 
   useEffect(() => {
     rowVirtualizer.measure();
-  }, [expandedIndexes, childs[row.index]]);
+  }, [expandedIndexes, parents[row.index]]);
 
   const onMouseLeave = useCallback(() => {
     const cells = document.querySelectorAll<HTMLDivElement>("[data-id]");
@@ -227,7 +227,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
                     expandedIndexes={expandedIndexes}
                     api={api}
                     isFirst={isFirst}
-                    setChilds={setChilds}
+                    setParents={setParents}
                     parentId={element.id}
                   />
                 </div>

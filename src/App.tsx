@@ -14,7 +14,7 @@ function App() {
   // }, []);
 
   const { data } = useQuery({
-    queryKey: ["blalba"],
+    queryKey: ["parents"],
     queryFn: () => axios.get("http://localhost:3000/parents"),
   });
 

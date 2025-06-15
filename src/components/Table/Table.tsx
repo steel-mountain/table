@@ -41,7 +41,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
   } = tableProps ?? {};
 
   const [dataTable, setDataTable] = useState<any[]>([]);
-  const [childs, setChilds] = useState<any[]>([]);
+  const [parents, setParents] = useState<any[]>([]);
   const [expandedIndexes, setExpandedIndexes] = useState<Array<number | string>>([]);
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -52,7 +52,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
   useEffect(() => {
     setDataTable(data);
-    setChilds(data);
+    setParents(data);
   }, [data]);
 
   useEffect(() => {
@@ -84,7 +84,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     getScrollElement: () => tableContainerRef.current,
     estimateSize: (i) => {
       const rowHeight = +(headerStyle?.height ?? defaultHeightRow);
-      const element = childs[i];
+      const element = parents[i];
 
       if (expandedIndexes.includes(element.id)) {
         const visibleDescendantsCount = countVisibleDescendants(element, expandedIndexes);
@@ -97,7 +97,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
 
   useEffect(() => {
     rowVirtualizer?.measure();
-  }, [childs, rowVirtualizer]);
+  }, [parents, rowVirtualizer]);
 
   useEffect(() => {
     const virtualItems = rowVirtualizer.getVirtualItems();
@@ -109,36 +109,6 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
       // console.log("Последний элемент в зоне видимости!");
     }
   }, [rowVirtualizer.getVirtualItems()]);
-
-  // const generateNestedItemsTopItemsCount = useCallback(
-  //   (id: number | string) => {
-  //     let count = 0;
-  //     let found = false;
-
-  //     function traverse(items: any[]) {
-  //       for (const item of items) {
-  //         if (found) return;
-
-  //         if (item.id === id) {
-  //           found = true;
-  //           return;
-  //         }
-
-  //         count++;
-
-  //         const children = childs[item.id];
-
-  //         if (expandedIndexes.includes(item.id) && children) {
-  //           traverse(children);
-  //         }
-  //       }
-  //     }
-
-  //     traverse(dataTable);
-  //     return count;
-  //   },
-  //   [expandedIndexes, childs]
-  // );
 
   const generateNestedItemsTopItemsCount = useCallback(
     (id: number | string) => {
@@ -162,10 +132,10 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
         }
       }
 
-      traverse(childs);
+      traverse(parents);
       return count;
     },
-    [expandedIndexes, childs]
+    [expandedIndexes, parents]
   );
 
   const onSetExpandIndexes = useCallback(
@@ -328,8 +298,8 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                                   generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
                                   api={api}
                                   isFirst={index === 0}
-                                  setChilds={setChilds}
-                                  childs={childs}
+                                  setParents={setParents}
+                                  parents={parents}
                                 />
                               );
                             })}
@@ -507,7 +477,7 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
                                   heightRow={+(bodyStyle?.height ?? defaultHeightRow)}
                                   generateNestedItemsTopItemsCount={generateNestedItemsTopItemsCount}
                                   api={api}
-                                  childs={childs}
+                                  parents={parents}
                                 />
                               );
                             })}
