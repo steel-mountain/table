@@ -64,20 +64,19 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
       }`;
 
     styleSheet.insertRule(rule, styleSheet.cssRules.length);
-  }, [columns]);
+  }, [columns, headerStyle?.height]);
 
   useEffect(() => {
     rowVirtualizer.measure();
-  }, [expandedIndexes]);
+  }, [expandedIndexes, parents]);
 
-  const columnVirtualizer = enableColumnVirtualizer
-    ? useVirtualizer({
-        count: columns.length,
-        getScrollElement: () => tableContainerRef.current,
-        estimateSize: (index) => (!columns[index]?.pinned ? columns[index].cellStyle?.minWidth ?? 100 : null),
-        horizontal: true,
-      })
-    : null;
+  const columnVirtualizer = useVirtualizer({
+    count: columns.length,
+    getScrollElement: () => tableContainerRef.current,
+    estimateSize: (index) => (!columns[index]?.pinned ? columns[index].cellStyle?.minWidth ?? 100 : null),
+    horizontal: true,
+    enabled: enableColumnVirtualizer,
+  });
 
   const rowVirtualizer = useVirtualizer({
     count: dataTable.length,
@@ -94,10 +93,6 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     },
     overscan: 3,
   });
-
-  useEffect(() => {
-    rowVirtualizer?.measure();
-  }, [parents, rowVirtualizer]);
 
   useEffect(() => {
     const virtualItems = rowVirtualizer.getVirtualItems();
@@ -138,25 +133,22 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     [expandedIndexes, parents]
   );
 
-  const onSetExpandIndexes = useCallback(
-    (id: string | number, isParent?: boolean, children?: any) => {
-      setExpandedIndexes((prev) => {
-        const isExpanded = prev.includes(id);
+  const onSetExpandIndexes = useCallback((id: string | number, isParent?: boolean, children?: any) => {
+    setExpandedIndexes((prev) => {
+      const isExpanded = prev.includes(id);
 
-        if (isExpanded) {
-          if (isParent) {
-            const childIds = children?.map((child: any) => child.id);
-            return prev.filter((item) => item !== id && !childIds.includes(item));
-          }
-
-          return prev.filter((item) => item !== id);
+      if (isExpanded) {
+        if (isParent) {
+          const childIds = children?.map((child: any) => child.id);
+          return prev.filter((item) => item !== id && !childIds.includes(item));
         }
 
-        return [...prev, id];
-      });
-    },
-    [expandedIndexes]
-  );
+        return prev.filter((item) => item !== id);
+      }
+
+      return [...prev, id];
+    });
+  }, []);
 
   const lastPinned = useMemo(() => {
     return columns.filter((item: any) => item?.pinned).at(-1);
@@ -174,10 +166,6 @@ export const CustomTable: FC<CustomTableProps> = memo(({ columns, data, tablePro
     }),
     [columns]
   );
-
-  // useEffect(() => {
-  //   console.log(childs);
-  // }, [childs]);
 
   return (
     <div

@@ -23,3 +23,39 @@ export function countVisibleDescendants(node: any, expandedIds: Array<string | n
   }
   return count;
 }
+
+export const generateStableIds = (items: any[], parentPath: string): any[] => {
+  return items.map((item, index) => {
+    const currentId = `${parentPath}-${index}`;
+    return {
+      ...item,
+      id: currentId,
+      children: Array.isArray(item.children) ? generateStableIds(item.children, currentId) : [],
+    };
+  });
+};
+
+export const updateChildren = (
+  items: any[],
+  parentId: string | number,
+  element: string | number,
+  children: any[]
+): any[] => {
+  return items.map((item) => {
+    if (item.id === parentId) {
+      return {
+        ...item,
+        children: updateChildren(item.children || [], parentId, element, children),
+      };
+    }
+
+    if (item.id === element) {
+      return {
+        ...item,
+        children,
+      };
+    }
+
+    return item;
+  });
+};

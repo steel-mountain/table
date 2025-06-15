@@ -4,6 +4,7 @@ import axios from "axios";
 import clsx from "clsx";
 import { Dispatch, FC, RefObject, SetStateAction, useCallback, useEffect, useMemo } from "react";
 import { CellLoader } from "../../../CellLoader/CellLoader";
+import { generateStableIds } from "../../utils/utils";
 import { SecondLevelItem } from "../SecondLevelItem/SecondLevelItem";
 import { ApiType, ColumnType } from "../types/types";
 import styles from "./styles.module.scss";
@@ -18,7 +19,6 @@ interface FirstLevelItemProps {
   isBorderRight?: boolean;
   isBorderTop?: boolean;
   expandedIndexes: Array<number | string>;
-  key: number | string;
   heightRow: number;
   api: ApiType;
   isFirst?: boolean;
@@ -60,29 +60,17 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
     if (!expanded) return;
     const arr = data?.pages?.flatMap((page) => page.data.data) ?? [];
 
-    const generateStableIds = (items: any[], parentPath: string): any[] => {
-      return items.map((item, index) => {
-        const currentId = `${parentPath}-${index}`;
-        return {
-          ...item,
-          id: currentId,
-          children: Array.isArray(item.children) ? generateStableIds(item.children, currentId) : [],
-        };
-      });
-    };
-
-    const newChildren = generateStableIds(arr, element.id);
-
-    return newChildren;
-  }, [data?.pages]);
+    // for local testing
+    return generateStableIds(arr, element.id);
+  }, [data?.pages, expanded, element.id]);
 
   useEffect(() => {
     if (!expanded) return;
+
     setParents?.((prev) => {
-      const arr = prev.map((item) => (item.id === element.id ? { ...item, children } : item));
-      return arr;
+      return prev.map((item) => (item.id === element.id ? { ...item, children } : item));
     });
-  }, [element.id, setParents, children]);
+  }, [element.id, setParents, children, expanded]);
 
   const rowVirtualizer = useVirtualizer({
     count: children?.length ?? 0,
@@ -108,20 +96,19 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
   useEffect(() => {
     if (isFirst) {
       const [lastItem] = [...rowVirtualizer.getVirtualItems()].reverse();
-      if (!lastItem) {
-        return;
-      }
+
+      if (!lastItem) return;
 
       if (lastItem.index >= children?.length - 1 && hasNextPage && !isFetchingNextPage) {
         console.log("CALLLL");
         fetchNextPage();
       }
     }
-  }, [hasNextPage, fetchNextPage, children?.length, isFetchingNextPage, rowVirtualizer.getVirtualItems()]);
+  }, [children?.length, fetchNextPage, hasNextPage, isFetchingNextPage, isFirst, rowVirtualizer.getVirtualItems()]);
 
   useEffect(() => {
     rowVirtualizer.measure();
-  }, [expandedIndexes, parents[row.index]]);
+  }, [expandedIndexes, parents]);
 
   const onMouseLeave = useCallback(() => {
     const cells = document.querySelectorAll<HTMLDivElement>("[data-id]");
