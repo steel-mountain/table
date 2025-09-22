@@ -14,10 +14,12 @@ function App() {
   //   return generateDataItems(5, 5, 5);
   // }, []);
 
-  const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, isFetchingNextPage, fetchNextPage, hasNextPage, isFetch } = useInfiniteQuery({
     queryKey: ["parents"],
-    queryFn: (ctx) => axios.get(`http://localhost:3000/parents?_page=${ctx.pageParam}&_per_page=25`),
-    getNextPageParam: (lastGroup) => lastGroup.data.next,
+    queryFn: (ctx) => axios.get(`http://localhost:4879/parents?_page=${ctx.pageParam}&_per_page=25`),
+    getNextPageParam: (lastGroup) => {
+      return lastGroup.data.next;
+    },
     initialPageParam: 1,
   });
 

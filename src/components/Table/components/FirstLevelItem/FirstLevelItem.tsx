@@ -50,7 +50,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
 }) => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["children", element.id],
-    queryFn: (ctx) => axios.get(`http://localhost:3000/children?_page=${ctx.pageParam}&_per_page=25`),
+    queryFn: (ctx) => axios.get(`http://localhost:4879/children?_page=${ctx.pageParam}&_per_page=25`),
     getNextPageParam: (lastGroup) => lastGroup.data.next,
     initialPageParam: 1,
     enabled: !!expanded,
@@ -183,7 +183,7 @@ export const FirstLevelItem: FC<FirstLevelItemProps> = ({
             {rowVirtualizer.getVirtualItems().map((virtualRow) => {
               const row = children?.[virtualRow.index];
 
-              // console.log(heightAbove, virtualRow);
+              console.log(virtualRow, heightAbove, generateNestedItemsTopItemsCount(row.id) + 1);
 
               return (
                 <div

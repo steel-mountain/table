@@ -47,7 +47,7 @@ export const SecondLevelItem: FC<SecondLevelItemProps> = ({
 }) => {
   const { data, isFetchingNextPage, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["grandchildren", element.id],
-    queryFn: (ctx) => axios.get(`http://localhost:3000/grandchildren?_page=${ctx.pageParam}&_per_page=25`),
+    queryFn: (ctx) => axios.get(`http://localhost:4879/grandchildren?_page=${ctx.pageParam}&_per_page=25`),
     getNextPageParam: (lastGroup) => lastGroup.data.next,
     initialPageParam: 1,
     enabled: !!expanded,

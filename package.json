@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "npx json-server all.json --port 4879"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.80.6",

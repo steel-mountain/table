@@ -12,6 +12,7 @@
 // }
 
 export function countVisibleDescendants(node: any, expandedIds: Array<string | number>) {
+  console.log(!node, node.children.length === 0);
   if (!node.children || node.children.length === 0) return 0;
 
   let count = 0;

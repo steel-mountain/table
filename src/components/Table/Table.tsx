@@ -132,7 +132,6 @@ export const CustomTable: FC<CustomTableProps> = memo(
             }
           }
         }
-
         traverse(parents);
         return count;
       },
@@ -228,7 +227,7 @@ export const CustomTable: FC<CustomTableProps> = memo(
                     {rowVirtualizer.getVirtualItems().map((virtualRow) => {
                       const element = dataTable[virtualRow.index];
 
-                      // console.log(generateNestedItemsTopItemsCount(element.id) + 1, virtualRow);
+                      console.log(virtualRow, generateNestedItemsTopItemsCount(element.id) + 1);
 
                       return (
                         <div
